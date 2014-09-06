@@ -2,7 +2,6 @@
 #define CELL_H
 
 #include "cmn_struct.h"
-#include "field.h"
 
 class Cell {
 protected:
@@ -13,20 +12,22 @@ public:
 
 class Neuron : public Cell {
 private:
-   NeuronField *field;
    int NeuronId;
-   struct DendrArea dendrArea;
-   int dendrRad;
    struct Axon axon;
+   int dendrRad;
+   Neuron **connection;
+   int numberOfConnections;
 public:
-   static int NumberOfNeurons;
+   static int NeuronCounter;
+   void resetIdCounter();
    Neuron(int x = -1, int y = -1);
-   void SetNeuronField(NeuronField *tmpfield);
-   int getNeuronId();
+   void setCoordinates(int x, int y);
+//   struct *Axon getAxon();
+   int getDendrRad();
    void createAxon(int length = 0, double azimuth = 0);
-   void growAxon(int delta);
-   void growDendr();
-   void CheckForNewNeuroConnection(struct DendrArea dendrArea);
+   int growAxon(int delta);
+   int growDendr(int delta);
+   int addConnection(Neuron *tmpConnection);
 };
 
 #endif

@@ -9,26 +9,25 @@
       CLUI TODO: Change class to namespace
 *****************/
 
-void CLUI::printNeuronalNetwork(Neuron *neurons) {
-   clearScreen();
-   int numberOfNeurons = neurons->NumberOfNeurons - 1;
-   printf("NumberOfNeurons = %d\n", numberOfNeurons);
+void CLUI::printNeuronalNetwork(NeuronField Field) {
+//   clearScreen();
 
-   char Field[XMAXSIZE][YMAXSIZE];
+   char field[XMAXSIZE][YMAXSIZE];
+
+   for(int x = 0; x < XMAXSIZE; x++)
+      for(int y = 0; y < YMAXSIZE; y++)
+         field[x][y] = Field.getFieldStat(x, y);
+
+   printf("\n\n\t");
    for(int i = 0; i < XMAXSIZE; i++)
-      for(int j = 0; j < YMAXSIZE; j++)
-         Field[i][j] = ' ';
-
-   for(int i = 0; i < numberOfNeurons; i++) {
-      struct Coordinates coord = neurons[i].getCoord();
-      Field[coord.CoordX][coord.CoordY] = 'N';
-   }
+      printf("%d\t", i);
 
    for(int j = 0; j < YMAXSIZE; j++) {
+      printf("\n%d\t", j);
       for(int i = 0; i < XMAXSIZE; i++)
-         printf("%c\t", Field[i][j]);
-      printf("\n");
+         printf("%c\t", field[i][j]);
    }
+   printf("\n");
 }
 
 void CLUI::printNeuron() {};

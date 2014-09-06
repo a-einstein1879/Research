@@ -4,21 +4,31 @@
 #include "cmn_struct.h"
 #include "cell.h"
 
+#define NEURONSYMBOL     'N'
+#define AXONSYMBOL       'A'
+#define EMPTYFIELDSYMBOL ' '
+
 class Field {
 protected:
    int numberOfCells;
-   char field[XMAXSIZE][YMAXSIZE][FIELDNAMELENGTH];
 public:
    int getNumberOfCells();
 };
 
 class NeuronField : public Field {
 private:
-   Neuron *neuron[MAXNUMBEROFNEURONS];
+   int maxNumberOfConnections;
+   char neuronField[XMAXSIZE][YMAXSIZE][FIELDNAMELENGTH];
+   Neuron *neurons;
 public:
    NeuronField();
-   int addNeuron(struct Coordinates coordinates, Neuron newNeuron); //returns 1 if succeded 0 if failed
-   Neuron getNeuronById(int cellId);
+   void createNeuron(int x, int y);
+   int addNeuron(int x = -1, int y = -1); //returns neuron Id
+   void growAxon(int NeuronId, int delta, double azimuth = 0);
+   void growDendr(int NeuronId, int delta);
+   Neuron* getNeuronById(int neuronId);
+   Neuron getNeuronByField(int x, int y);
+   char getFieldStat(int x, int y);
 };
 
 #endif
