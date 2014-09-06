@@ -19,6 +19,7 @@ int main() {
    field1.addNeuron(1, 3);
    field1.addNeuron();
    field1.growAxon(0, 1, 0);
+   field1.printFieldStat();
    CLUI ui;
    ui.printNeuronalNetwork(field1);
    return 0;

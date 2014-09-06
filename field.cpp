@@ -42,14 +42,6 @@ void NeuronField::createNeuron(int x, int y) {
       neurons[i] = *(tmpNeurons+i);
 
    delete [] tmpNeurons;
-
-   neurons[numberOfCells - 1].setCoordinates(x, y);
-   neuronField[x][y][0] = NEURONSYMBOL;
-   printf("numberOfCells = %d\n", numberOfCells);
-   for(int i = 0; i < numberOfCells; i++) {
-      struct Coordinates coord = neurons[i].getCoord();
-      printf("Coord[%d] = (%d,%d)\n", i, coord.CoordX, coord.CoordY);
-   }
 };
 
 int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counter to prevent loop
@@ -59,6 +51,8 @@ int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counte
 
    if (availability == true) {
          createNeuron(x, y);
+         neurons[numberOfCells - 1].setCoordinates(x, y);
+         neuronField[x][y][0] = NEURONSYMBOL;
    }
    else {
       if (randomity == true)
@@ -80,6 +74,14 @@ Neuron* NeuronField::getNeuronById(int neuronId) {
 };
 
 Neuron NeuronField::getNeuronByField(int x, int y) {
+};
+
+void NeuronField::printFieldStat() {
+   printf("numberOfCells = %d\n", numberOfCells);
+   for(int i = 0; i < numberOfCells; i++) {
+      struct Coordinates coord = neurons[i].getCoord();
+      printf("Coord[%d] = (%d,%d)\n", i, coord.CoordX, coord.CoordY);
+   }
 };
 
 char NeuronField::getFieldStat(int x, int y) {

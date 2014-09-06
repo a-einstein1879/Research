@@ -28,6 +28,7 @@ public:
    void growDendr(int NeuronId, int delta);
    Neuron* getNeuronById(int neuronId);
    Neuron getNeuronByField(int x, int y);
+   void printFieldStat();
    char getFieldStat(int x, int y);
 };
 
