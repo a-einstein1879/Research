@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 /*****************
       Cell
@@ -21,17 +22,23 @@ int Neuron::NeuronCounter = FIRSTNEURONNUMBER;
 Neuron::Neuron(int x, int y) {
    if (NeuronCounter < MAXNUMBEROFNEURONS + FIRSTNEURONNUMBER) {
       NeuronId = NeuronCounter++;
-//      printf("Creating neuron with NeuronId = %d\n", NeuronId);
 
       coord.CoordX = x;
       coord.CoordY = y;
-      axon.Exist = 0;
+
+#ifdef TRACE
+      if(x != -1 and y != -1) {printf("Added neuron number %d with coordinates x = %d, y = %d\n", NeuronId + 1, x, y);}
+      else                    {printf("Added neuron number %d without place\n", NeuronId + 1);}
+#endif
+
+      axonEnd.CoordX = x;
+      axonEnd.CoordY = y;
       dendrRad = 0;
+
       numberOfConnections = 0;
       connection = new Neuron*[numberOfConnections];
       for(int i = 0; i < numberOfConnections; i++)
          connection[i] = NULL;
-//      printf("Coord = (%d,%d)\n", coord.CoordX, coord.CoordY);
    }
    else { //TODO:Add destructor calling for not creating new object
       printf("Can`t create a new neuron with counter %d. Maximum number of cells exceeded\n", NeuronCounter);
@@ -41,40 +48,58 @@ Neuron::Neuron(int x, int y) {
 void Neuron::setCoordinates(int x, int y) {//TODO: proper checking of coordinates availability
       coord.CoordX = x;
       coord.CoordY = y;
-//      printf("Coordinates of neuron %d were changed.\nNew coordinates = (%d,%d)\n", NeuronId, coord.CoordX, coord.CoordY);
+
+#ifdef TRACE
+      printf("Coordinates of neuron number %d were changed. New coordinates are x = %d, y = %d\n", NeuronId, x, y);
+#endif
 };
 
 
 void Neuron::resetIdCounter() {
    NeuronCounter = FIRSTNEURONNUMBER;
 };
-/**Axon Neuron::getAxon() {
-   return *axon;
-};*/
+
+int Neuron::getAxonLength() {
+   return axon.Length;
+};
 
 int Neuron::getDendrRad() {
    return dendrRad;
 };
 
-void Neuron::createAxon(int length, double azimuth) {
-   if ((length == 0) and (azimuth == 0)) {
-      axon.Exist = 1;
-      axon.Azimuth = 0;
-   }
-   else {
-      axon.Exist = 1;
-      axon.Length = length;
-      axon.Azimuth = azimuth;
-   }
-};
-
-int Neuron::growAxon(int delta) {
-   if(axon.Exist == 0) {createAxon(delta);}
+int Neuron::growAxon(int delta, double azimuth) {
+   if (azimuth == -1) {azimuth = axon.Azimuth;}
    axon.Length += delta;
+   axon.Azimuth = azimuth;
+/*   axonEnd.CoordX += (int) (double(delta) * sin(azimuth));
+   axonEnd.CoordY += (int) (double(delta) * cos(azimuth));*/ //TODO: Needs thinking
 };
 
 int Neuron::growDendr(int delta) {
    dendrRad += delta;
 };
 
-int Neuron::addConnection(Neuron *tmpConnection) {};
+int Neuron::addConnection(Neuron *tmpConnection) {
+
+#ifdef TRACE
+   printf("Added connection number %d\n", numberOfConnections + 1);
+#endif
+
+   Neuron **TmpConnection;
+   TmpConnection = new Neuron*[numberOfConnections];
+   for(int i = 0; i < numberOfConnections; i++)
+      TmpConnection[i] = connection[i];
+
+   connection = new Neuron*[++numberOfConnections];
+
+   for(int i = 0; i < numberOfConnections - 1; i++)
+      connection[i] = TmpConnection[i];
+
+   delete [] TmpConnection;
+
+   connection[numberOfConnections - 1] = tmpConnection;
+};
+
+int Neuron::getNumberOfConnections() {
+   return numberOfConnections;
+};

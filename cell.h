@@ -14,6 +14,7 @@ class Neuron : public Cell {
 private:
    int NeuronId;
    struct Axon axon;
+   struct Coordinates axonEnd;
    int dendrRad;
    Neuron **connection;
    int numberOfConnections;
@@ -22,12 +23,12 @@ public:
    void resetIdCounter();
    Neuron(int x = -1, int y = -1);
    void setCoordinates(int x, int y);
-//   struct *Axon getAxon();
    int getDendrRad();
-   void createAxon(int length = 0, double azimuth = 0);
-   int growAxon(int delta);
+   int getAxonLength();
+   int growAxon(int delta, double azimuth = -1);
    int growDendr(int delta);
    int addConnection(Neuron *tmpConnection);
+   int getNumberOfConnections();
 };
 
 #endif

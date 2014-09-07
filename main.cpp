@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 
 /*****************
       Main
@@ -15,10 +16,11 @@
 int main() {
    srand (time(NULL));
    NeuronField field1;
-   field1.addNeuron(1, 1);
    field1.addNeuron(1, 3);
-   field1.addNeuron();
-   field1.growAxon(0, 1, 0);
+   field1.addNeuron(1, 6);
+   field1.addNeuron(1, 10);
+   field1.growAxon(2, 10, M_PI);
+   field1.growAxon(0, 7, M_PI/4);
    field1.printFieldStat();
    CLUI ui;
    ui.printNeuronalNetwork(field1);

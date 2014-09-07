@@ -16,16 +16,16 @@ void CLUI::printNeuronalNetwork(NeuronField Field) {
 
    for(int x = 0; x < XMAXSIZE; x++)
       for(int y = 0; y < YMAXSIZE; y++)
-         field[x][y] = Field.getFieldStat(x, y);
+         field[x][y] = Field.getFieldType(x, y);
 
    printf("\n\n\t");
    for(int i = 0; i < XMAXSIZE; i++)
-      printf("%d\t", i);
+      printf("%d ", i);
 
    for(int j = 0; j < YMAXSIZE; j++) {
       printf("\n%d\t", j);
       for(int i = 0; i < XMAXSIZE; i++)
-         printf("%c\t", field[i][j]);
+         printf("%c ", field[i][j]);
    }
    printf("\n");
 }
