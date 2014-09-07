@@ -9,6 +9,8 @@
 #define DENDRSYMBOL      'D'
 #define EMPTYFIELDSYMBOL ' '
 
+#define AXONANGLEPRECISENESS 4
+
 class Field {
 protected:
    int numberOfCells;
@@ -30,18 +32,21 @@ private:
 **********************/
    void createNeuron();
    void fillField(int x, int y, char type, int neuronId);
+
+   Neuron* getNeuronByField(int x, int y);
+   Neuron* getNeuronById(int neuronId);
+
 public:
 /**********************
       Public functions
 **********************/
    NeuronField();
    int addNeuron(int x = -1, int y = -1);
-   void growAxon(int NeuronId, int delta, double azimuth = 0); /* azimuth is an angle that is counted from positive part of y axis counterclockwise */
+   void growAxons(int maxLength = 0);
+   void growAxon(int NeuronId, int delta, double azimuth = -1); /* azimuth is an angle that is counted from positive part of y axis counterclockwise */
    void growDendr(int NeuronId, int delta);
-   Neuron* getNeuronById(int neuronId);
-   char getFieldType(int x, int y);
-   Neuron* getNeuronByField(int x, int y);
-   void printFieldStat();
+   char getFieldType(int x, int y); /* Should make it a friend of UI class */
+   void printFieldStat(int time = -1);
 };
 
 #endif

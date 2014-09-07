@@ -30,37 +30,41 @@ NeuronField::NeuronField() {
    neurons = new Neuron[numberOfCells];
 };
 
-void NeuronField::createNeuron() { //TODO: for more reliable solution add MAXNUMBEROFNEURONS checking
-   Neuron *tmpNeurons;
-   neurons->resetIdCounter();
-   tmpNeurons = new Neuron[numberOfCells];
-   for(int i = 0; i < numberOfCells; i++)
-      *(tmpNeurons+i) = neurons[i];
+void NeuronField::createNeuron() {
+   if (numberOfCells < MAXNUMBEROFNEURONS) {
+      Neuron *tmpNeurons;
+      neurons->resetIdCounter();
+      tmpNeurons = new Neuron[numberOfCells];
+      for(int i = 0; i < numberOfCells; i++)
+         *(tmpNeurons+i) = neurons[i];
 
-   neurons->resetIdCounter();
-   neurons = new Neuron[++numberOfCells];
+      neurons->resetIdCounter();
+      neurons = new Neuron[++numberOfCells];
 
-   for(int i = 0; i < numberOfCells - 1; i++)
-      neurons[i] = *(tmpNeurons+i);
+      for(int i = 0; i < numberOfCells - 1; i++)
+         neurons[i] = *(tmpNeurons+i);
 
-   delete [] tmpNeurons;
+      delete [] tmpNeurons;
+   }
 };
 
 int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counter to prevent loop
-   bool availability = false, randomity = false;
-   if ((x == -1) and (y == -1)) {x = rand()%XMAXSIZE; y = rand()%YMAXSIZE; randomity = true;}
-   if (getFieldType(x, y) == EMPTYFIELDSYMBOL) {availability = true;}
+   if (numberOfCells < MAXNUMBEROFNEURONS) {
+      bool availability = false, randomity = false;
+      if ((x == -1) and (y == -1)) {x = rand()%XMAXSIZE; y = rand()%YMAXSIZE; randomity = true;}
+      if (getFieldType(x, y) == EMPTYFIELDSYMBOL) {availability = true;}
 
-   if (availability == true) {
-         createNeuron();
-         neurons[numberOfCells - 1].setCoordinates(x, y);
-         fillField(x, y, NEURONSYMBOL, numberOfCells - 1);
-   }
-   else {
-      if (randomity == true)
-         addNeuron();
+      if (availability == true) {
+            createNeuron();
+            neurons[numberOfCells - 1].setCoordinates(x, y);
+            fillField(x, y, NEURONSYMBOL, numberOfCells - 1);
+      }
       else {
-         printf("Can`t create neuron here (%d, %d)\n", x, y);
+         if (randomity == true)
+            addNeuron();
+         else {
+            printf("Can`t create neuron here (%d, %d)\n", x, y);
+         }
       }
    }
    return 0;
@@ -78,14 +82,22 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    Neuron *neuron;
    neuron = getNeuronById(NeuronId);
    struct Coordinates coord;
-   coord = neuron->getCoord(); //axon end??
+   coord = neuron->getAxonEnd();
+   if (azimuth == -1) {azimuth = neuron->getAxonAzimuth();}
+   if (azimuth == -1) {azimuth = 2 * M_PI * double (rand()%AXONANGLEPRECISENESS + 1) / AXONANGLEPRECISENESS;} 
+                      /* If it`s still -1 it means there was no azimuth. We choose random direction */
    int axonLength = neuron->getAxonLength();
 
-   for(int i = axonLength + 1; i < delta; i++) {
+#ifdef TRACE
+   printf("Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
+#endif
+
+   for(int i = 1; i < delta + 1; i++) {
       int newx, newy;
       newx = coord.CoordX + i * sin(azimuth);
       newy = coord.CoordY + i * cos(azimuth);
 
+      neuron->growAxon(axonLength + i, azimuth);
       if (newx > XMAXSIZE or newx < 0 or newy > YMAXSIZE or newy < 0/* or newx == coord.CoordX or newy == coord.CoordY*/) {continue;}
       char stat = getFieldType(newx, newy);
       if (stat == NEURONSYMBOL or stat == DENDRSYMBOL) {
@@ -112,6 +124,9 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    }
 };
 
+void NeuronField::growAxons(int maxLength) {
+};
+
 void NeuronField::growDendr(int NeuronId, int delta) {
 };
 
@@ -133,10 +148,13 @@ Neuron* NeuronField::getNeuronByField(int x, int y) {
    return ret;
 };
 
-void NeuronField::printFieldStat() {
+void NeuronField::printFieldStat(int time) {
+   if (time != -1) {printf("time = %d\n", time);}
    printf("numberOfCells = %d\n", numberOfCells);
    for(int i = 0; i < numberOfCells; i++) {
       struct Coordinates coord = neurons[i].getCoord();
-      printf("Coord[%d] = (%d,%d)\n", i, coord.CoordX, coord.CoordY);
+      int axonLength           = neurons[i].getAxonLength();
+      double axonAzimuth       = neurons[i].getAxonAzimuth();
+      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e\n", i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth);
    }
 };

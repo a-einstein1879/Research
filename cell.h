@@ -23,9 +23,11 @@ public:
    void resetIdCounter();
    Neuron(int x = -1, int y = -1);
    void setCoordinates(int x, int y);
+   struct Coordinates getAxonEnd();
    int getDendrRad();
    int getAxonLength();
-   int growAxon(int delta, double azimuth = -1);
+   double getAxonAzimuth();
+   int growAxon(int length, double azimuth = -1);
    int growDendr(int delta);
    int addConnection(Neuron *tmpConnection);
    int getNumberOfConnections();

@@ -33,6 +33,8 @@ Neuron::Neuron(int x, int y) {
 
       axonEnd.CoordX = x;
       axonEnd.CoordY = y;
+      axon.Length  =  0;
+      axon.Azimuth = -1; 
       dendrRad = 0;
 
       numberOfConnections = 0;
@@ -49,6 +51,9 @@ void Neuron::setCoordinates(int x, int y) {//TODO: proper checking of coordinate
       coord.CoordX = x;
       coord.CoordY = y;
 
+      axonEnd.CoordX = x;
+      axonEnd.CoordY = y;
+
 #ifdef TRACE
       printf("Coordinates of neuron number %d were changed. New coordinates are x = %d, y = %d\n", NeuronId, x, y);
 #endif
@@ -63,16 +68,28 @@ int Neuron::getAxonLength() {
    return axon.Length;
 };
 
+double Neuron::getAxonAzimuth() {
+   return axon.Azimuth;
+};
+
+struct Coordinates Neuron::getAxonEnd() {
+   return axonEnd;
+};
+
 int Neuron::getDendrRad() {
    return dendrRad;
 };
 
-int Neuron::growAxon(int delta, double azimuth) {
+int Neuron::growAxon(int length, double azimuth) {
    if (azimuth == -1) {azimuth = axon.Azimuth;}
-   axon.Length += delta;
+   axon.Length  = length;
    axon.Azimuth = azimuth;
-/*   axonEnd.CoordX += (int) (double(delta) * sin(azimuth));
-   axonEnd.CoordY += (int) (double(delta) * cos(azimuth));*/ //TODO: Needs thinking
+   axonEnd.CoordX = coord.CoordX + (int) double(length) * sin(azimuth);
+   axonEnd.CoordY = coord.CoordY + (int) double(length) * cos(azimuth);
+
+#ifdef TRACE
+   printf("Axon end is (%d, %d) now\n", axonEnd.CoordX, axonEnd.CoordY);
+#endif
 };
 
 int Neuron::growDendr(int delta) {
