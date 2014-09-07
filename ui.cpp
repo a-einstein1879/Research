@@ -18,7 +18,11 @@ void CLUI::printNeuronalNetwork(NeuronField Field) {
       for(int y = 0; y < YMAXSIZE; y++)
          field[x][y] = Field.getFieldType(x, y);
 
-   printf("\n\n\t");
+#ifdef TRACE
+   printf("\n\n");
+#endif
+   
+   printf("\t");
    for(int i = 0; i < XMAXSIZE; i++)
       printf("%d ", i);
 

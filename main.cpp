@@ -21,7 +21,11 @@ int main() {
    field1.addNeuron(1, 10);
    field1.growAxon(2, 10, M_PI);
    field1.growAxon(0, 7, M_PI/4);
+
+#ifdef TRACE
    field1.printFieldStat();
+#endif
+
    CLUI ui;
    ui.printNeuronalNetwork(field1);
    return 0;
