@@ -82,8 +82,9 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    Neuron *neuron;
    neuron = getNeuronById(NeuronId);
    struct Coordinates coord;
-   coord = neuron->getAxonEnd();
+   coord = neuron->getCoord();
    if (azimuth == -1) {azimuth = neuron->getAxonAzimuth();}
+   else               {coord = neuron->getAxonEnd();}
    if (azimuth == -1) {azimuth = 2 * M_PI * double (rand()%AXONANGLEPRECISENESS + 1) / AXONANGLEPRECISENESS;} 
                       /* If it`s still -1 it means there was no azimuth. We choose random direction */
    int axonLength = neuron->getAxonLength();
@@ -92,12 +93,12 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    printf("Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
 #endif
 
-   for(int i = 1; i < delta + 1; i++) {
+   for(int i = axonLength + 1; i < axonLength + delta + 1; i++) {
       int newx, newy;
       newx = coord.CoordX + i * sin(azimuth);
       newy = coord.CoordY + i * cos(azimuth);
 
-      neuron->growAxon(axonLength + i, azimuth);
+      neuron->growAxon(i, azimuth);
       if (newx > XMAXSIZE or newx < 0 or newy > YMAXSIZE or newy < 0/* or newx == coord.CoordX or newy == coord.CoordY*/) {continue;}
       char stat = getFieldType(newx, newy);
       if (stat == NEURONSYMBOL or stat == DENDRSYMBOL) {

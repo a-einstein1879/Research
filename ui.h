@@ -5,7 +5,6 @@
 
 class UI {
 private:
-   virtual void printNeuron()=0;
    virtual void clearScreen()=0;
 public:   
    virtual void printNeuronalNetwork(NeuronField Field)=0;
@@ -13,9 +12,16 @@ public:
 
 class CLUI : public UI {
 private:
-   void printNeuron();
    void clearScreen();
 public:
+   void printNeuronalNetwork(NeuronField Field);
+};
+
+class GUI : public UI {
+private:
+   void clearScreen();
+public:
+   GUI();
    void printNeuronalNetwork(NeuronField Field);
 };
 
