@@ -64,8 +64,7 @@ void Processor::Run() {
       field1.unchargeBatteries();
 
       /* printing actions */
-      ui.printNeuronalNetwork(field1);
-      field1.printFieldStat(time++);
+      ui.printNeuronalNetwork(field1, time++);
 
       usleep(DELAYTIME);
    }

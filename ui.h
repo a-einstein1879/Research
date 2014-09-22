@@ -3,22 +3,23 @@
 
 #include "field.h"
 
-#define NEURONCOLOR  GREEN
-#define AXONCOLOR    WHITE
-#define FIRINGCOLOR  RED
+#define NEURONCOLOR     GREEN
+#define AXONCOLOR       WHITE
+#define FIRINGCOLOR     RED
+#define EMPTYFIELDCOLOR BLACK
 
 class UI {
 private:
    virtual void clearScreen()=0;
 public:   
-   virtual void printNeuronalNetwork(NeuronField Field)=0;
+   virtual void printNeuronalNetwork(NeuronField Field, int time)=0;
 };
 
 class CLUI : public UI {
 private:
    void clearScreen();
 public:
-   void printNeuronalNetwork(NeuronField Field);
+   void printNeuronalNetwork(NeuronField Field, int time);
 };
 
 class GUI : public UI {
@@ -27,7 +28,7 @@ private:
 public:
    GUI();
    ~GUI();
-   void printNeuronalNetwork(NeuronField Field);
+   void printNeuronalNetwork(NeuronField Field, int time);
 };
 
 #endif

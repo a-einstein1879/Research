@@ -11,8 +11,9 @@
       CLUI TODO: Change class to namespace
 *****************/
 
-void CLUI::printNeuronalNetwork(NeuronField Field) {
+void CLUI::printNeuronalNetwork(NeuronField Field, int time) {
    clearScreen();
+   Field.printFieldStat(time);
 
    char field[XMAXSIZE][YMAXSIZE];
 
@@ -59,8 +60,9 @@ void GUI::clearScreen() {
          putpixel(i, j, BLACK);
 };
 
-void GUI::printNeuronalNetwork(NeuronField Field) {
+void GUI::printNeuronalNetwork(NeuronField Field, int time) {
 
+   Field.printFieldStat(time);
    char field[XMAXSIZE][YMAXSIZE];
 
    for(int x = 0; x < XMAXSIZE; x++)
@@ -71,8 +73,9 @@ void GUI::printNeuronalNetwork(NeuronField Field) {
 
    for(int j = 0; j < YMAXSIZE; j++)
       for(int i = 0; i < XMAXSIZE; i++) {
-         if (field[i][j] == NEURONSYMBOL) {putpixel(i, j, NEURONCOLOR);};
-         if (field[i][j] == AXONSYMBOL)   {putpixel(i, j, AXONCOLOR);  };
-         if (field[i][j] == FIREDSYMBOL)  {putpixel(i, j, FIRINGCOLOR);};
+         if (field[i][j] == NEURONSYMBOL)       {putpixel(i, j, NEURONCOLOR);    };
+         if (field[i][j] == AXONSYMBOL)         {putpixel(i, j, AXONCOLOR);      };
+         if (field[i][j] == FIREDSYMBOL)        {putpixel(i, j, FIRINGCOLOR);    };
+//         if (field[i][j] == EMPTYFIELDSYMBOL)   {putpixel(i, j, EMPTYFIELDCOLOR);}; /* slows program too much. Needs thinking */
       }
 };
