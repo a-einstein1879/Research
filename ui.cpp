@@ -72,7 +72,7 @@ void GUI::printNeuronalNetwork(NeuronField Field) {
    for(int j = 0; j < YMAXSIZE; j++)
       for(int i = 0; i < XMAXSIZE; i++) {
          if (field[i][j] == NEURONSYMBOL) {putpixel(i, j, NEURONCOLOR);};
-         if (field[i][j] == AXONSYMBOL)   {putpixel(i, j, AXONCOLOR);};
+         if (field[i][j] == AXONSYMBOL)   {putpixel(i, j, AXONCOLOR);  };
          if (field[i][j] == FIREDSYMBOL)  {putpixel(i, j, FIRINGCOLOR);};
       }
 };

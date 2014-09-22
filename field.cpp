@@ -48,6 +48,10 @@ void NeuronField::createNeuron() {
    }
 };
 
+/**********************
+      Growing
+**********************/
+
 int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counter to prevent loop
    if (numberOfCells < MAXNUMBEROFNEURONS) {
       bool availability = false, randomity = false;
@@ -131,6 +135,9 @@ void NeuronField::growAxons(int maxLength) {
 void NeuronField::growDendr(int NeuronId, int delta) {
 };
 
+/**********************
+      Firing
+**********************/
 
 void NeuronField::fireNeuron(int NeuronId) {
    if (NeuronId == -1) {NeuronId = rand()%numberOfCells;}
@@ -148,6 +155,10 @@ void NeuronField::unchargeBatteries() {
    for(int i = 0; i < numberOfCells; i++)
       neurons[i].unchargeBattery();
 };
+
+/**********************
+      Interface
+**********************/
 
 bool NeuronField::getSpotStat(int x, int y) {
    Neuron* neuron;
@@ -172,6 +183,10 @@ Neuron* NeuronField::getNeuronByField(int x, int y) {
    ret = neurons + neuronId;
    return ret;
 };
+
+/**********************
+      Print
+**********************/
 
 void NeuronField::printFieldStat(int time) {
    system("clear");

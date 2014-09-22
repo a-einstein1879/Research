@@ -17,6 +17,10 @@ struct Coordinates Cell::getCoord() {
       Neuron
 *****************/
 
+/**********************
+      Creation and deletition
+**********************/
+
 int Neuron::NeuronCounter = FIRSTNEURONNUMBER;
 
 Neuron::Neuron(int x, int y) {
@@ -72,21 +76,9 @@ void Neuron::resetIdCounter() {
    NeuronCounter = FIRSTNEURONNUMBER;
 };
 
-int Neuron::getAxonLength() {
-   return axon.Length;
-};
-
-double Neuron::getAxonAzimuth() {
-   return axon.Azimuth;
-};
-
-struct Coordinates Neuron::getAxonEnd() {
-   return axonEnd;
-};
-
-int Neuron::getDendrRad() {
-   return dendrRad;
-};
+/**********************
+      Growth
+**********************/
 
 int Neuron::growAxon(int length, double azimuth) {
    if (azimuth == -1) {azimuth = axon.Azimuth;}
@@ -125,6 +117,10 @@ int Neuron::addConnection(Neuron *tmpConnection) {
    connection[numberOfConnections - 1] = tmpConnection;
 };
 
+/**********************
+      Firing
+**********************/
+
 bool Neuron::checkIfFired() {
    return isFired;
 };
@@ -140,6 +136,26 @@ void Neuron::chargeBattery() {
 void Neuron::unchargeBattery() {
    if (isFired == true and batteryCharge > 0) {batteryCharge--;}
    if (batteryCharge == 0) {isFired = false;}
+};
+
+/**********************
+      Interface
+**********************/
+
+int Neuron::getAxonLength() {
+   return axon.Length;
+};
+
+double Neuron::getAxonAzimuth() {
+   return axon.Azimuth;
+};
+
+struct Coordinates Neuron::getAxonEnd() {
+   return axonEnd;
+};
+
+int Neuron::getDendrRad() {
+   return dendrRad;
 };
 
 int Neuron::getNumberOfConnections() {
