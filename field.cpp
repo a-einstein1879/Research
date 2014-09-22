@@ -98,8 +98,8 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
       newx = coord.CoordX + i * sin(azimuth);
       newy = coord.CoordY + i * cos(azimuth);
 
+      if (newx > (XMAXSIZE - 1) or newx < 0 or newy > (YMAXSIZE - 1) or newy < 0 or ( newx == coord.CoordX and newy == coord.CoordY ) ) {continue;}
       neuron->growAxon(i, azimuth);
-      if (newx > XMAXSIZE or newx < 0 or newy > YMAXSIZE or newy < 0/* or newx == coord.CoordX or newy == coord.CoordY*/) {continue;}
       char stat = getFieldType(newx, newy);
       if (stat == NEURONSYMBOL or stat == DENDRSYMBOL) {
 

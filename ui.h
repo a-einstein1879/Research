@@ -22,6 +22,7 @@ private:
    void clearScreen();
 public:
    GUI();
+   ~GUI();
    void printNeuronalNetwork(NeuronField Field);
 };
 

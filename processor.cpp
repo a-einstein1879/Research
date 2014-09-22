@@ -37,10 +37,10 @@ void Processor::Run() {
    srand (time(NULL));
    NeuronField field1;
    field1.addNeuron();
-   GUI ui;
+   CLUI ui;
    int time = 0;
 
-   while(1) {
+   while(time < 1000) {
       /* actions */
       if (neuronGrowth.TimeLeft == 0 and neuronGrowth.Enabled == true) {
          field1.addNeuron(); 

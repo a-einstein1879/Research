@@ -12,7 +12,7 @@
 *****************/
 
 void CLUI::printNeuronalNetwork(NeuronField Field) {
-//   clearScreen();
+   clearScreen();
 
    char field[XMAXSIZE][YMAXSIZE];
 
@@ -50,6 +50,10 @@ GUI::GUI() {
    int gd=DETECT,gm;
    initgraph(&gd,&gm,NULL);
 };
+
+GUI::~GUI() {
+   closegraph();
+}
 
 void GUI::clearScreen() {
    for(int i = 0; i < XMAXSIZE; i++)

@@ -9,7 +9,7 @@
 #define DENDRSYMBOL      'D'
 #define EMPTYFIELDSYMBOL ' '
 
-#define AXONANGLEPRECISENESS 8
+#define AXONANGLEPRECISENESS 2
 
 class Field {
 protected:
