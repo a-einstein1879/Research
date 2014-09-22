@@ -3,6 +3,10 @@
 
 #include "field.h"
 
+#define NEURONCOLOR  GREEN
+#define AXONCOLOR    WHITE
+#define FIRINGCOLOR  RED
+
 class UI {
 private:
    virtual void clearScreen()=0;

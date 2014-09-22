@@ -174,6 +174,7 @@ Neuron* NeuronField::getNeuronByField(int x, int y) {
 };
 
 void NeuronField::printFieldStat(int time) {
+   system("clear");
    if (time != -1) {printf("time = %d\n", time);}
    printf("numberOfCells = %d\n", numberOfCells);
    for(int i = 0; i < numberOfCells; i++) {

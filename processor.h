@@ -9,7 +9,7 @@
 #define SPONTANEOUSACTIVITYCHARACTERTIME  1
 #define CHARGEBATTERIESCHARACTERTIME      2
 
-#define DELAYTIME             500000
+#define DELAYTIME             5000
 
 #define NEURONGROWTH          true
 #define AXONGROWTH            true

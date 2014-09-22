@@ -28,7 +28,7 @@ void Processor::Run() {
    srand (time(NULL));
    NeuronField field1;
    field1.addNeuron();
-   CLUI ui;
+   GUI ui;
    int time = 0;
 
    while(time < 1000) {

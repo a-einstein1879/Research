@@ -20,11 +20,7 @@ void CLUI::printNeuronalNetwork(NeuronField Field) {
       for(int y = 0; y < YMAXSIZE; y++) {
          field[x][y] = Field.getFieldType(x, y);
          if ( field[x][y] != EMPTYFIELDSYMBOL ) {field[x][y] = Field.getSpotStat(x, y) ? FIREDSYMBOL : field[x][y];}
-      }
-#ifdef TRACE
-   printf("\n\n");
-#endif
-   
+      }   
 
    printf("\t");
    for(int i = 0; i < XMAXSIZE; i++)
@@ -68,12 +64,15 @@ void GUI::printNeuronalNetwork(NeuronField Field) {
    char field[XMAXSIZE][YMAXSIZE];
 
    for(int x = 0; x < XMAXSIZE; x++)
-      for(int y = 0; y < YMAXSIZE; y++)
+      for(int y = 0; y < YMAXSIZE; y++) {
          field[x][y] = Field.getFieldType(x, y);
-   
+         if ( field[x][y] != EMPTYFIELDSYMBOL ) {field[x][y] = Field.getSpotStat(x, y) ? FIREDSYMBOL : field[x][y];}
+      }
+
    for(int j = 0; j < YMAXSIZE; j++)
       for(int i = 0; i < XMAXSIZE; i++) {
-         if (field[i][j] == NEURONSYMBOL) {putpixel(i, j, GREEN);};
-         if (field[i][j] == AXONSYMBOL)   {putpixel(i, j, WHITE);};
+         if (field[i][j] == NEURONSYMBOL) {putpixel(i, j, NEURONCOLOR);};
+         if (field[i][j] == AXONSYMBOL)   {putpixel(i, j, AXONCOLOR);};
+         if (field[i][j] == FIREDSYMBOL)  {putpixel(i, j, FIRINGCOLOR);};
       }
 };
