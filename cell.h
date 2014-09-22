@@ -59,13 +59,16 @@ public:
 
    bool checkIfFired();
    void fire();
+   void spreadImpulse();
    void chargeBattery();
    void unchargeBattery();
+   void printConnections();
 
 /**********************
       Interface
 **********************/
 
+   int getNeuronId();
    struct Coordinates getAxonEnd();
    int getDendrRad();
    int getAxonLength();

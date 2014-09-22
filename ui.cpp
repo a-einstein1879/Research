@@ -13,7 +13,6 @@
 
 void CLUI::printNeuronalNetwork(NeuronField Field, int time) {
    clearScreen();
-   Field.printFieldStat(time);
 
    char field[XMAXSIZE][YMAXSIZE];
 
@@ -33,6 +32,7 @@ void CLUI::printNeuronalNetwork(NeuronField Field, int time) {
          printf("%c ", field[i][j]);
    }
    printf("\n");
+   Field.printFieldStat(time);
 }
 
 void CLUI::clearScreen() {
@@ -62,7 +62,6 @@ void GUI::clearScreen() {
 
 void GUI::printNeuronalNetwork(NeuronField Field, int time) {
 
-   Field.printFieldStat(time);
    char field[XMAXSIZE][YMAXSIZE];
 
    for(int x = 0; x < XMAXSIZE; x++)
@@ -78,4 +77,6 @@ void GUI::printNeuronalNetwork(NeuronField Field, int time) {
          if (field[i][j] == FIREDSYMBOL)        {putpixel(i, j, FIRINGCOLOR);    };
 //         if (field[i][j] == EMPTYFIELDSYMBOL)   {putpixel(i, j, EMPTYFIELDCOLOR);}; /* slows program too much. Needs thinking */
       }
+
+   Field.printFieldStat(time);
 };

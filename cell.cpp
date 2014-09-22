@@ -129,6 +129,13 @@ void Neuron::fire() {
    isFired = true;
 };
 
+void Neuron::spreadImpulse() {
+   if (isFired and numberOfConnections > 0) {
+//      for(int i = 0; i < numberOfConnections; i++)
+//         connection[i]
+   }
+};
+
 void Neuron::chargeBattery() {
    if (!(isFired)) {batteryCharge++;}
 };
@@ -138,9 +145,20 @@ void Neuron::unchargeBattery() {
    if (batteryCharge == 0) {isFired = false;}
 };
 
+
+void Neuron::printConnections() {
+   if (numberOfConnections > 0) {
+         printf("Cell: Neuron %d is connected with %d neurons\n", NeuronId, numberOfConnections);
+   }
+};
+
 /**********************
       Interface
 **********************/
+
+int Neuron::getNeuronId() {
+   return NeuronId;
+};
 
 int Neuron::getAxonLength() {
    return axon.Length;

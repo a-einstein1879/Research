@@ -146,6 +146,11 @@ void NeuronField::fireNeuron(int NeuronId) {
    if ( !(neuron->checkIfFired()) ) {neuron->fire();}
 };
 
+void NeuronField::spreadImpulse() {
+   for(int i = 0; i < numberOfCells; i++)
+      neurons[i].spreadImpulse();
+};
+
 void NeuronField::chargeBatteries() {
    for(int i = 0; i < numberOfCells; i++)
       neurons[i].chargeBattery();
@@ -185,11 +190,10 @@ Neuron* NeuronField::getNeuronByField(int x, int y) {
 };
 
 /**********************
-      Print
+      Print. TODO:Can be really good to move it to UI
 **********************/
 
 void NeuronField::printFieldStat(int time) {
-   system("clear");
    if (time != -1) {printf("time = %d\n", time);}
    printf("numberOfCells = %d\n", numberOfCells);
    for(int i = 0; i < numberOfCells; i++) {
@@ -197,6 +201,9 @@ void NeuronField::printFieldStat(int time) {
       int axonLength           = neurons[i].getAxonLength();
       double axonAzimuth       = neurons[i].getAxonAzimuth();
       int batteryCharge        = neurons[i].getBatteryCharge();
-      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. BatteryCharge = %d\n", i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, batteryCharge);
+      int numberOfConnections  = neurons[i].getNumberOfConnections();
+      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. BatteryCharge = %d. NumberOfConnections = %d\n", 
+                     i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, batteryCharge, numberOfConnections);
+      if (numberOfConnections > 0) { neurons[i].printConnections(); }
    }
 };
