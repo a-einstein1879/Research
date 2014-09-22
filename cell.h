@@ -26,6 +26,7 @@ public:
    static int NeuronCounter;
    void resetIdCounter();
    Neuron(int x = -1, int y = -1);
+   ~Neuron();
    void setCoordinates(int x, int y);
    struct Coordinates getAxonEnd();
    int getDendrRad();

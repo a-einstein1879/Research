@@ -50,6 +50,11 @@ Neuron::Neuron(int x, int y) {
    }
 }
 
+
+Neuron::~Neuron() {
+   NeuronCounter--;
+};
+
 void Neuron::setCoordinates(int x, int y) {//TODO: proper checking of coordinates availability
       coord.CoordX = x;
       coord.CoordY = y;
