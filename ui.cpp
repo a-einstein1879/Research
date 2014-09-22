@@ -17,13 +17,15 @@ void CLUI::printNeuronalNetwork(NeuronField Field) {
    char field[XMAXSIZE][YMAXSIZE];
 
    for(int x = 0; x < XMAXSIZE; x++)
-      for(int y = 0; y < YMAXSIZE; y++)
+      for(int y = 0; y < YMAXSIZE; y++) {
          field[x][y] = Field.getFieldType(x, y);
-
+         if ( field[x][y] != EMPTYFIELDSYMBOL ) {field[x][y] = Field.getSpotStat(x, y) ? FIREDSYMBOL : field[x][y];}
+      }
 #ifdef TRACE
    printf("\n\n");
 #endif
    
+
    printf("\t");
    for(int i = 0; i < XMAXSIZE; i++)
       printf("%d ", i);

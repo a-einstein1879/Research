@@ -8,6 +8,7 @@
 #define AXONSYMBOL       'A'
 #define DENDRSYMBOL      'D'
 #define EMPTYFIELDSYMBOL ' '
+#define FIREDSYMBOL      'F'
 
 #define AXONANGLEPRECISENESS 2
 
@@ -44,8 +45,13 @@ public:
    int addNeuron(int x = -1, int y = -1);
    void growAxons(int maxLength = 0);
    void growAxon(int NeuronId, int delta, double azimuth = -1); /* azimuth is an angle that is counted from positive part of y axis counterclockwise */
-   void growDendr(int NeuronId, int delta);
+   void growDendr(int NeuronId, int delta);                     /* no functionality... yet */
+   void fireNeuron(int NeuronId = -1);
+   void chargeBatteries();
+   void unchargeBatteries();
+
    char getFieldType(int x, int y); /* Should make it a friend of UI class */
+   bool getSpotStat(int x, int y); /* For UI to get stat fired or not fired */
    void printFieldStat(int time = -1);
 };
 

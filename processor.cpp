@@ -7,27 +7,18 @@
 #include <time.h>
 #include <unistd.h>
 
-/*struct Process {
-   int  ProcessId;
-   int  TimeLeft;
-   bool Enabled;
-};
-
-#define NEURONGROWTHCHARACTERTIME 10
-#define AXONGROWTHCHARACTERTIME   1
-#define DELAYTIME                 1000
-
-#define NEURONGROWTH true
-#define AXONGROWTH   true
-   struct Process neuronGrowth, axonGrowth;
-*/
-
 Processor::Processor() {
-   neuronGrowth.Enabled  = NEURONGROWTH;
-   neuronGrowth.TimeLeft = rand()%NEURONGROWTHCHARACTERTIME;
+   neuronGrowth.Enabled          = NEURONGROWTH;
+   neuronGrowth.TimeLeft         = rand()%NEURONGROWTHCHARACTERTIME;
 
-   axonGrowth.Enabled   = AXONGROWTH;
-   axonGrowth.TimeLeft  = rand()%AXONGROWTHCHARACTERTIME;
+   axonGrowth.Enabled            = AXONGROWTH;
+   axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
+
+   spontaneousActivity.Enabled   = SPONTANEOUSACTIVITY;
+   spontaneousActivity.TimeLeft  = rand()%SPONTANEOUSACTIVITYCHARACTERTIME;
+
+   chargeBatteries.Enabled       = CHARGEBATTERIES;
+   chargeBatteries.TimeLeft      = rand()%CHARGEBATTERIESCHARACTERTIME;
 };
 
 void Processor::RunNeuronGrowth() {};
@@ -42,22 +33,40 @@ void Processor::Run() {
 
    while(time < 1000) {
       /* actions */
-      if (neuronGrowth.TimeLeft == 0 and neuronGrowth.Enabled == true) {
+      if (neuronGrowth.TimeLeft             == 0 and
+          neuronGrowth.Enabled              == true) {
          field1.addNeuron(); 
-         neuronGrowth.TimeLeft = rand()%NEURONGROWTHCHARACTERTIME;
+         neuronGrowth.TimeLeft         = rand()%NEURONGROWTHCHARACTERTIME;
       }
-      if (axonGrowth.TimeLeft   == 0 and axonGrowth.Enabled   == true) {
+      if (axonGrowth.TimeLeft               == 0 and
+          axonGrowth.Enabled                == true) {
          field1.growAxon(rand()%field1.getNumberOfCells(), 1); 
-         axonGrowth.TimeLeft  = rand()%AXONGROWTHCHARACTERTIME;
+         axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
       }
+      if (spontaneousActivity.TimeLeft      == 0
+          and spontaneousActivity.Enabled   == true
+          and time > 50) {
+         field1.fireNeuron();
+         spontaneousActivity.TimeLeft  = rand()%SPONTANEOUSACTIVITYCHARACTERTIME;
+      }
+      if (chargeBatteries.TimeLeft          == 0 and
+          chargeBatteries.Enabled           == true
+          and time > 70) {
+         field1.chargeBatteries();
+         chargeBatteries.TimeLeft      = rand()%CHARGEBATTERIESCHARACTERTIME;
+      }
+
+      /* post actions */
+      if (neuronGrowth.TimeLeft          != 0) {neuronGrowth.TimeLeft--;       }
+      if (axonGrowth.TimeLeft            != 0) {axonGrowth.TimeLeft--;         }
+      if (spontaneousActivity.TimeLeft   != 0) {spontaneousActivity.TimeLeft--;}
+      if (chargeBatteries.TimeLeft       != 0) {chargeBatteries.TimeLeft--;    }
+      field1.unchargeBatteries();
 
       /* printing actions */
       ui.printNeuronalNetwork(field1);
       field1.printFieldStat(time++);
 
-      /* post actions */
-      if (neuronGrowth.TimeLeft != 0) {neuronGrowth.TimeLeft--;}
-      if (axonGrowth.TimeLeft   != 0) {axonGrowth.TimeLeft--;  }
       usleep(DELAYTIME);
    }
 };

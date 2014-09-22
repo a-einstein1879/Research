@@ -41,6 +41,9 @@ Neuron::Neuron(int x, int y) {
       connection = new Neuron*[numberOfConnections];
       for(int i = 0; i < numberOfConnections; i++)
          connection[i] = NULL;
+
+      isFired = false;
+      batteryCharge = STARTBATTERYCHARGE;
    }
    else { //TODO:Add destructor calling for not creating new object
       printf("Can`t create a new neuron with counter %d. Maximum number of cells exceeded\n", NeuronCounter);
@@ -117,6 +120,27 @@ int Neuron::addConnection(Neuron *tmpConnection) {
    connection[numberOfConnections - 1] = tmpConnection;
 };
 
+bool Neuron::checkIfFired() {
+   return isFired;
+};
+
+void Neuron::fire() {
+   isFired = true;
+};
+
+void Neuron::chargeBattery() {
+   if (!(isFired)) {batteryCharge++;}
+};
+
+void Neuron::unchargeBattery() {
+   if (isFired == true and batteryCharge > 0) {batteryCharge--;}
+   if (batteryCharge == 0) {isFired = false;}
+};
+
 int Neuron::getNumberOfConnections() {
    return numberOfConnections;
+};
+
+int Neuron::getBatteryCharge() {
+   return batteryCharge;
 };

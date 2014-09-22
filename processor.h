@@ -4,16 +4,21 @@
 #include "cmn_struct.h"
 
 
-#define NEURONGROWTHCHARACTERTIME 10
-#define AXONGROWTHCHARACTERTIME   1
-#define DELAYTIME                 5000
+#define NEURONGROWTHCHARACTERTIME         20
+#define AXONGROWTHCHARACTERTIME           5
+#define SPONTANEOUSACTIVITYCHARACTERTIME  1
+#define CHARGEBATTERIESCHARACTERTIME      2
 
-#define NEURONGROWTH true
-#define AXONGROWTH   true
+#define DELAYTIME             500000
+
+#define NEURONGROWTH          true
+#define AXONGROWTH            true
+#define SPONTANEOUSACTIVITY   true
+#define CHARGEBATTERIES       true
 
 class Processor {
 private:
-   struct Process neuronGrowth, axonGrowth;
+   struct Process neuronGrowth, axonGrowth, spontaneousActivity, chargeBatteries;
    void RunNeuronGrowth();
    void RunAxonGrowth();
 public:

@@ -131,6 +131,30 @@ void NeuronField::growAxons(int maxLength) {
 void NeuronField::growDendr(int NeuronId, int delta) {
 };
 
+
+void NeuronField::fireNeuron(int NeuronId) {
+   if (NeuronId == -1) {NeuronId = rand()%numberOfCells;}
+   Neuron* neuron;
+   neuron = getNeuronById(NeuronId);
+   if ( !(neuron->checkIfFired()) ) {neuron->fire();}
+};
+
+void NeuronField::chargeBatteries() {
+   for(int i = 0; i < numberOfCells; i++)
+      neurons[i].chargeBattery();
+};
+
+void NeuronField::unchargeBatteries() {
+   for(int i = 0; i < numberOfCells; i++)
+      neurons[i].unchargeBattery();
+};
+
+bool NeuronField::getSpotStat(int x, int y) {
+   Neuron* neuron;
+   neuron = getNeuronByField(x, y);
+   return neuron->checkIfFired();
+};
+
 Neuron* NeuronField::getNeuronById(int neuronId) {
    return neurons + neuronId;
 };
@@ -156,6 +180,7 @@ void NeuronField::printFieldStat(int time) {
       struct Coordinates coord = neurons[i].getCoord();
       int axonLength           = neurons[i].getAxonLength();
       double axonAzimuth       = neurons[i].getAxonAzimuth();
-      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e\n", i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth);
+      int batteryCharge        = neurons[i].getBatteryCharge();
+      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. BatteryCharge = %d\n", i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, batteryCharge);
    }
 };
