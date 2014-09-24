@@ -75,11 +75,21 @@ int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counte
 };
 
 void NeuronField::fillField(int x, int y, char type, int neuronId) {
+
+#ifdef TRACE
+   printf("Field: Field (%d, %d) was `%c` type", x, y, getFieldType(x, y));
+#endif
+
    char id[FIELDNAMELENGTH];
    snprintf(id, FIELDNAMELENGTH, "%d", neuronId);
    neuronField[x][y][0] = type;
    for(int i = 1; i < FIELDNAMELENGTH; i++)
       neuronField[x][y][i] = id[i-1];
+
+#ifdef TRACE
+   printf(" and now it`s `%c` type with id %s\n", getFieldType(x, y), neuronField[x][y] + 1);
+#endif
+
 };
 
 void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
@@ -94,7 +104,7 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    int axonLength = neuron->getAxonLength();
 
 #ifdef TRACE
-   printf("Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
+   printf("Field: Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
 #endif
 
    for(int i = axonLength + 1; i < axonLength + delta + 1; i++) {
@@ -108,23 +118,20 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
       if (stat == NEURONSYMBOL or stat == DENDRSYMBOL) {
 
 #ifdef TRACE
-         printf("Added connection. newx = %d\tnewy = %d\tNeuronId = %d\n", newx, newy, NeuronId);
+         Neuron* neu = getNeuronByField(newx, newx);
+         printf("Field: Adding connection. From neuron %d to neuron %d in (%d, %d)\n", NeuronId, neu->getNeuronId(), newx, newy);
 #endif
-
          neuron->addConnection(getNeuronByField(newx, newx));
          int NumberOfConnections = neuron->getNumberOfConnections();
+
 #ifdef TRACE
-         if (maxNumberOfConnections < NumberOfConnections) {printf("maxNumberOfConnections increased to %d\n", NumberOfConnections);}
+         if (maxNumberOfConnections < NumberOfConnections) {printf("Field: maxNumberOfConnections increased to %d\n", NumberOfConnections);}
 #endif
+
          maxNumberOfConnections = (maxNumberOfConnections < NumberOfConnections) ? NumberOfConnections : maxNumberOfConnections;
       }
       else {
          fillField(newx, newy, AXONSYMBOL, NeuronId);
-
-#ifdef TRACE
-         printf("newx = %d\tnewy = %d\tNeuronId = %d\n", newx, newy, NeuronId);
-#endif
-
       }
    }
 };

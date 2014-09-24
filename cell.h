@@ -3,7 +3,12 @@
 
 #include "cmn_struct.h"
 
-#define STARTBATTERYCHARGE 3
+#define STARTBATTERYCHARGE                3
+#define MAXNUMBEROFCONNECTIONSPERNEURON   10
+
+/**********************
+      Cell
+**********************/
 
 class Cell {
 protected:
@@ -11,6 +16,10 @@ protected:
 public:
    struct Coordinates getCoord();
 };
+
+/**********************
+      Neuron
+**********************/
 
 class Neuron : public Cell {
 private:
@@ -23,7 +32,7 @@ private:
    struct Axon axon;
    struct Coordinates axonEnd;
    int dendrRad;
-   Neuron **connection;
+   Neuron *connection[MAXNUMBEROFCONNECTIONSPERNEURON];
    int numberOfConnections;
 
 /**********************

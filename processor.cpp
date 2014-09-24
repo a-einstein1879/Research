@@ -33,9 +33,10 @@ void Processor::Run() {
    CLUI ui;
    int time = 0;
 
-   field1.addNeuron(2, 10);
    field1.addNeuron(2, 12);
-   field1.growAxon(0, 3, 0);
+   field1.addNeuron(2, 10);
+   field1.addNeuron(2, 15);
+   field1.growAxon(1, 10, 0);
    while(time < 1000) {
       /* actions */
       if (neuronGrowth.TimeLeft             == 0 and
@@ -78,6 +79,6 @@ void Processor::Run() {
       /* printing actions */
       ui.printNeuronalNetwork(field1, time++);
 
-      usleep(DELAYTIME);
+      usleep(time>50?DELAYTIME*10:DELAYTIME);
    }
 };

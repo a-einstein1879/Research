@@ -31,8 +31,8 @@ Neuron::Neuron(int x, int y) {
       coord.CoordY = y;
 
 #ifdef TRACE
-      if(x != -1 and y != -1) {printf("Added neuron number %d with coordinates x = %d, y = %d\n", NeuronId + 1, x, y);}
-      else                    {printf("Added neuron number %d without place\n", NeuronId + 1);}
+      if(x != -1 and y != -1) {printf("Cell: Added neuron number %d with coordinates x = %d, y = %d\n", NeuronId, x, y);}
+      else                    {printf("Cell: Added neuron number %d without place\n", NeuronId);}
 #endif
 
       axonEnd.CoordX = x;
@@ -42,15 +42,14 @@ Neuron::Neuron(int x, int y) {
       dendrRad = 0;
 
       numberOfConnections = 0;
-      connection = new Neuron*[numberOfConnections];
-      for(int i = 0; i < numberOfConnections; i++)
+      for(int i = 0; i < MAXNUMBEROFCONNECTIONSPERNEURON; i++)
          connection[i] = NULL;
 
       isFired = false;
       batteryCharge = STARTBATTERYCHARGE;
    }
    else { //TODO:Add destructor calling for not creating new object
-      printf("Can`t create a new neuron with counter %d. Maximum number of cells exceeded\n", NeuronCounter);
+      printf("Cell: Can`t create a new neuron with counter %d. Maximum number of cells exceeded\n", NeuronCounter);
    }
 }
 
@@ -67,7 +66,7 @@ void Neuron::setCoordinates(int x, int y) {//TODO: proper checking of coordinate
       axonEnd.CoordY = y;
 
 #ifdef TRACE
-      printf("Coordinates of neuron number %d were changed. New coordinates are x = %d, y = %d\n", NeuronId, x, y);
+      printf("Cell: Coordinates of neuron number %d were changed. New coordinates are x = %d, y = %d\n", NeuronId, x, y);
 #endif
 };
 
@@ -88,7 +87,7 @@ int Neuron::growAxon(int length, double azimuth) {
    axonEnd.CoordY = coord.CoordY + (int) double(length) * cos(azimuth);
 
 #ifdef TRACE
-   printf("Axon end is (%d, %d) now\n", axonEnd.CoordX, axonEnd.CoordY);
+   printf("Cell: Axon end of neuron %d is (%d, %d) now\n", NeuronId, axonEnd.CoordX, axonEnd.CoordY);
 #endif
 };
 
@@ -97,11 +96,15 @@ int Neuron::growDendr(int delta) {
 };
 
 int Neuron::addConnection(Neuron *tmpConnection) {
+   printf("Cell: Adding connection from neuron %d to neuron %d", NeuronId, tmpConnection->getNeuronId());
 
 #ifdef TRACE
-   printf("Added connection number %d\n", numberOfConnections + 1);
+   printf("Cell: Added connection number %d\n", numberOfConnections + 1);
 #endif
-
+   if (numberOfConnections < MAXNUMBEROFCONNECTIONSPERNEURON) {
+      connection[numberOfConnections++] = tmpConnection;
+   }
+/*
    Neuron **TmpConnection;
    TmpConnection = new Neuron*[numberOfConnections];
    for(int i = 0; i < numberOfConnections; i++)
@@ -114,7 +117,7 @@ int Neuron::addConnection(Neuron *tmpConnection) {
 
    delete [] TmpConnection;
 
-   connection[numberOfConnections - 1] = tmpConnection;
+   connection[numberOfConnections - 1] = tmpConnection;*/
 };
 
 /**********************
@@ -131,8 +134,8 @@ void Neuron::fire() {
 
 void Neuron::spreadImpulse() {
    if (isFired and numberOfConnections > 0) {
-//      for(int i = 0; i < numberOfConnections; i++)
-//         connection[i]
+      for(int i = 0; i < numberOfConnections; i++)
+         connection[i]->fire();
    }
 };
 
@@ -149,6 +152,8 @@ void Neuron::unchargeBattery() {
 void Neuron::printConnections() {
    if (numberOfConnections > 0) {
          printf("Cell: Neuron %d is connected with %d neurons\n", NeuronId, numberOfConnections);
+         for(int i = 0; i < numberOfConnections; i++)
+            printf("Cell: Connection number %d is with neuron %d\n", i + 1, connection[i]->getNeuronId());
    }
 };
 

@@ -4,19 +4,19 @@
 #include "cmn_struct.h"
 
 
-#define NEURONGROWTHCHARACTERTIME         20
-#define AXONGROWTHCHARACTERTIME           5
-#define SPONTANEOUSACTIVITYCHARACTERTIME  1
-#define CHARGEBATTERIESCHARACTERTIME      2
+#define NEURONGROWTHCHARACTERTIME         10
+#define AXONGROWTHCHARACTERTIME           100
+#define SPONTANEOUSACTIVITYCHARACTERTIME  10
+#define CHARGEBATTERIESCHARACTERTIME      5
 #define SPREADIMPULSECHARACTERTIME        1
 
-#define DELAYTIME             500000
+#define DELAYTIME             50000
 
-#define NEURONGROWTH          true
-#define AXONGROWTH            true
+#define NEURONGROWTH          false
+#define AXONGROWTH            false
 #define SPONTANEOUSACTIVITY   true
 #define CHARGEBATTERIES       true
-#define SPREADIMPULSE         true
+#define SPREADIMPULSE         false
 
 class Processor {
 private:

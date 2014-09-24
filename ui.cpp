@@ -77,6 +77,6 @@ void GUI::printNeuronalNetwork(NeuronField Field, int time) {
          if (field[i][j] == FIREDSYMBOL)        {putpixel(i, j, FIRINGCOLOR);    };
 //         if (field[i][j] == EMPTYFIELDSYMBOL)   {putpixel(i, j, EMPTYFIELDCOLOR);}; /* slows program too much. Needs thinking */
       }
-
+   system("clear");
    Field.printFieldStat(time);
 };
