@@ -48,7 +48,7 @@ GUI::GUI() {
    XInitThreads();
    int gd=DETECT,gm;
    initgraph(&gd,&gm,NULL);
-};
+}
 
 GUI::~GUI() {
    closegraph();
@@ -58,7 +58,7 @@ void GUI::clearScreen() {
    for(int i = 0; i < XMAXSIZE; i++)
       for(int j = 0; j < YMAXSIZE; j++)
          putpixel(i, j, BLACK);
-};
+}
 
 void GUI::printNeuronalNetwork(NeuronField Field, int time) {
 
@@ -79,4 +79,4 @@ void GUI::printNeuronalNetwork(NeuronField Field, int time) {
       }
    system("clear");
    Field.printFieldStat(time);
-};
+}

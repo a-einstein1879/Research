@@ -13,7 +13,7 @@
 #define DELAYTIME             50000
 
 #define NEURONGROWTH          false
-#define AXONGROWTH            false
+#define AXONGROWTH            true
 #define SPONTANEOUSACTIVITY   true
 #define CHARGEBATTERIES       true
 #define SPREADIMPULSE         false

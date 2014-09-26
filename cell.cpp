@@ -56,7 +56,7 @@ Neuron::Neuron(int x, int y) {
 
 Neuron::~Neuron() {
    NeuronCounter--;
-};
+}
 
 void Neuron::setCoordinates(int x, int y) {//TODO: proper checking of coordinates availability
       coord.CoordX = x;
@@ -68,12 +68,11 @@ void Neuron::setCoordinates(int x, int y) {//TODO: proper checking of coordinate
 #ifdef TRACE
       printf("Cell: Coordinates of neuron number %d were changed. New coordinates are x = %d, y = %d\n", NeuronId, x, y);
 #endif
-};
-
+}
 
 void Neuron::resetIdCounter() {
    NeuronCounter = FIRSTNEURONNUMBER;
-};
+}
 
 /**********************
       Growth
@@ -89,14 +88,14 @@ int Neuron::growAxon(int length, double azimuth) {
 #ifdef TRACE
    printf("Cell: Axon end of neuron %d is (%d, %d) now\n", NeuronId, axonEnd.CoordX, axonEnd.CoordY);
 #endif
-};
+}
 
 int Neuron::growDendr(int delta) {
    dendrRad += delta;
-};
+}
 
 int Neuron::addConnection(Neuron *tmpConnection) {
-   printf("Cell: Adding connection from neuron %d to neuron %d", NeuronId, tmpConnection->getNeuronId());
+   printf("Cell: Adding connection from neuron %d to neuron %d\n", NeuronId, tmpConnection->getNeuronId());
 
 #ifdef TRACE
    printf("Cell: Added connection number %d\n", numberOfConnections + 1);
@@ -118,7 +117,7 @@ int Neuron::addConnection(Neuron *tmpConnection) {
    delete [] TmpConnection;
 
    connection[numberOfConnections - 1] = tmpConnection;*/
-};
+}
 
 /**********************
       Firing
@@ -126,27 +125,27 @@ int Neuron::addConnection(Neuron *tmpConnection) {
 
 bool Neuron::checkIfFired() {
    return isFired;
-};
+}
 
 void Neuron::fire() {
    isFired = true;
-};
+}
 
 void Neuron::spreadImpulse() {
    if (isFired and numberOfConnections > 0) {
       for(int i = 0; i < numberOfConnections; i++)
          connection[i]->fire();
    }
-};
+}
 
 void Neuron::chargeBattery() {
    if (!(isFired)) {batteryCharge++;}
-};
+}
 
 void Neuron::unchargeBattery() {
    if (isFired == true and batteryCharge > 0) {batteryCharge--;}
    if (batteryCharge == 0) {isFired = false;}
-};
+}
 
 
 void Neuron::printConnections() {
@@ -155,7 +154,7 @@ void Neuron::printConnections() {
          for(int i = 0; i < numberOfConnections; i++)
             printf("Cell: Connection number %d is with neuron %d\n", i + 1, connection[i]->getNeuronId());
    }
-};
+}
 
 /**********************
       Interface
@@ -163,28 +162,28 @@ void Neuron::printConnections() {
 
 int Neuron::getNeuronId() {
    return NeuronId;
-};
+}
 
 int Neuron::getAxonLength() {
    return axon.Length;
-};
+}
 
 double Neuron::getAxonAzimuth() {
    return axon.Azimuth;
-};
+}
 
 struct Coordinates Neuron::getAxonEnd() {
    return axonEnd;
-};
+}
 
 int Neuron::getDendrRad() {
    return dendrRad;
-};
+}
 
 int Neuron::getNumberOfConnections() {
    return numberOfConnections;
-};
+}
 
 int Neuron::getBatteryCharge() {
    return batteryCharge;
-};
+}

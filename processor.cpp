@@ -22,10 +22,10 @@ Processor::Processor() {
 
    spreadImpulse.Enabled         = SPREADIMPULSE;
    spreadImpulse.TimeLeft        = rand()%SPREADIMPULSECHARACTERTIME;
-};
+}
 
-void Processor::RunNeuronGrowth() {};
-void Processor::RunAxonGrowth() {};
+void Processor::RunNeuronGrowth() {}
+void Processor::RunAxonGrowth() {}
 
 void Processor::Run() {
    srand (time(NULL));
@@ -81,4 +81,4 @@ void Processor::Run() {
 
       usleep(time>50?DELAYTIME*10:DELAYTIME);
    }
-};
+}

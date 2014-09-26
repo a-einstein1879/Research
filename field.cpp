@@ -12,7 +12,7 @@
 
 int Field::getNumberOfCells() {
    return numberOfCells;
-};
+}
 
 /*****************
       NeuronField
@@ -28,7 +28,7 @@ NeuronField::NeuronField() {
             neuronField[i][j][k] = EMPTYFIELDSYMBOL;
 
    neurons = new Neuron[numberOfCells];
-};
+}
 
 void NeuronField::createNeuron() {
    if (numberOfCells < MAXNUMBEROFNEURONS) {
@@ -46,7 +46,7 @@ void NeuronField::createNeuron() {
 
       delete [] tmpNeurons;
    }
-};
+}
 
 /**********************
       Growing
@@ -72,7 +72,7 @@ int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counte
       }
    }
    return 0;
-};
+}
 
 void NeuronField::fillField(int x, int y, char type, int neuronId) {
 
@@ -90,7 +90,7 @@ void NeuronField::fillField(int x, int y, char type, int neuronId) {
    printf(" and now it`s `%c` type with id %s\n", getFieldType(x, y), neuronField[x][y] + 1);
 #endif
 
-};
+}
 
 void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    Neuron *neuron;
@@ -104,7 +104,7 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    int axonLength = neuron->getAxonLength();
 
 #ifdef TRACE
-   printf("Field: Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
+   printf("Field: Axon starts growing. Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
 #endif
 
    for(int i = axonLength + 1; i < axonLength + delta + 1; i++) {
@@ -119,6 +119,7 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
 
 #ifdef TRACE
          Neuron* neu = getNeuronByField(newx, newx);
+         if (neu == NULL) {continue;}
          printf("Field: Adding connection. From neuron %d to neuron %d in (%d, %d)\n", NeuronId, neu->getNeuronId(), newx, newy);
 #endif
          neuron->addConnection(getNeuronByField(newx, newx));
@@ -134,13 +135,13 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
          fillField(newx, newy, AXONSYMBOL, NeuronId);
       }
    }
-};
+}
 
 void NeuronField::growAxons(int maxLength) {
-};
+}
 
 void NeuronField::growDendr(int NeuronId, int delta) {
-};
+}
 
 /**********************
       Firing
@@ -151,22 +152,22 @@ void NeuronField::fireNeuron(int NeuronId) {
    Neuron* neuron;
    neuron = getNeuronById(NeuronId);
    if ( !(neuron->checkIfFired()) ) {neuron->fire();}
-};
+}
 
 void NeuronField::spreadImpulse() {
    for(int i = 0; i < numberOfCells; i++)
       neurons[i].spreadImpulse();
-};
+}
 
 void NeuronField::chargeBatteries() {
    for(int i = 0; i < numberOfCells; i++)
       neurons[i].chargeBattery();
-};
+}
 
 void NeuronField::unchargeBatteries() {
    for(int i = 0; i < numberOfCells; i++)
       neurons[i].unchargeBattery();
-};
+}
 
 /**********************
       Interface
@@ -176,15 +177,15 @@ bool NeuronField::getSpotStat(int x, int y) {
    Neuron* neuron;
    neuron = getNeuronByField(x, y);
    return neuron->checkIfFired();
-};
+}
 
 Neuron* NeuronField::getNeuronById(int neuronId) {
    return neurons + neuronId;
-};
+}
 
 char NeuronField::getFieldType(int x, int y) {
    return neuronField[x][y][0];
-};
+}
 
 Neuron* NeuronField::getNeuronByField(int x, int y) {
    Neuron* ret = NULL;
@@ -194,7 +195,7 @@ Neuron* NeuronField::getNeuronByField(int x, int y) {
 
    ret = neurons + neuronId;
    return ret;
-};
+}
 
 /**********************
       Print. TODO:Can be really good to move it to UI
@@ -213,4 +214,4 @@ void NeuronField::printFieldStat(int time) {
                      i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, batteryCharge, numberOfConnections);
       if (numberOfConnections > 0) { neurons[i].printConnections(); }
    }
-};
+}
