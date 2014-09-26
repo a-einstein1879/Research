@@ -180,7 +180,18 @@ bool NeuronField::getSpotStat(int x, int y) {
 }
 
 Neuron* NeuronField::getNeuronById(int neuronId) {
-   return neurons + neuronId;
+   int realId = neurons[neuronId].getNeuronId();
+   if ( realId == neuronId) {return neurons + neuronId;}
+   else {
+      Neuron* neuro;
+      for(int i = 0; i < numberOfCells; i++) {
+         int realId = neurons[i].getNeuronId();
+         if ( realId == neuronId ) {return neurons + i;}
+      }
+   }
+#ifdef TRACE
+         printf("Field: Can`t find a neuron with neuronId %d\n", neuronId);
+#endif
 }
 
 char NeuronField::getFieldType(int x, int y) {
@@ -191,9 +202,9 @@ Neuron* NeuronField::getNeuronByField(int x, int y) {
    Neuron* ret = NULL;
 
 
-   int neuronId = CharToInt(neuronField[x][y] + 1, FIELDNAMELENGTH - 1);
+   int neuronId = CharToInt(neuronField[x][y] + IDOFFSET, FIELDNAMELENGTH - IDOFFSET);
 
-   ret = neurons + neuronId;
+   ret = getNeuronById(neuronId);
    return ret;
 }
 
