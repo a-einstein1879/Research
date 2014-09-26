@@ -6,21 +6,23 @@
 
 #define NEURONGROWTHCHARACTERTIME         20
 #define AXONGROWTHCHARACTERTIME           5
+#define DENDRGROWTHCHARACTERTIME          10
 #define SPONTANEOUSACTIVITYCHARACTERTIME  1
 #define CHARGEBATTERIESCHARACTERTIME      2
 #define SPREADIMPULSECHARACTERTIME        1
 
-#define DELAYTIME             500000
+#define DELAYTIME             5000
 
 #define NEURONGROWTH          true
 #define AXONGROWTH            true
-#define SPONTANEOUSACTIVITY   true
-#define CHARGEBATTERIES       true
-#define SPREADIMPULSE         true
+#define DENDRGROWTH           true
+#define SPONTANEOUSACTIVITY   false
+#define CHARGEBATTERIES       false
+#define SPREADIMPULSE         false
 
 class Processor {
 private:
-   struct Process neuronGrowth, axonGrowth, spontaneousActivity, chargeBatteries, spreadImpulse;
+   struct Process neuronGrowth, axonGrowth, dendrGrowth, spontaneousActivity, chargeBatteries, spreadImpulse;
    void RunNeuronGrowth();
    void RunAxonGrowth();
 public:

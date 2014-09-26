@@ -5,6 +5,7 @@
 
 #define NEURONCOLOR     GREEN
 #define AXONCOLOR       WHITE
+#define DENDRITECOLOR   YELLOW
 #define FIRINGCOLOR     RED
 #define EMPTYFIELDCOLOR BLACK
 

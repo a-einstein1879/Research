@@ -14,6 +14,9 @@ Processor::Processor() {
    axonGrowth.Enabled            = AXONGROWTH;
    axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
 
+   dendrGrowth.Enabled           = DENDRGROWTH;
+   dendrGrowth.TimeLeft          = rand()%DENDRGROWTHCHARACTERTIME;
+
    spontaneousActivity.Enabled   = SPONTANEOUSACTIVITY;
    spontaneousActivity.TimeLeft  = rand()%SPONTANEOUSACTIVITYCHARACTERTIME;
 
@@ -30,12 +33,13 @@ void Processor::RunAxonGrowth() {};
 void Processor::Run() {
    srand (time(NULL));
    NeuronField field1;
-   CLUI ui;
+   GUI ui;
    int time = 0;
 
-   field1.addNeuron(2, 10);
-   field1.addNeuron(2, 12);
+   field1.addNeuron(10, 5);
+   field1.addNeuron(10, 12);
    field1.growAxon(0, 3, 0);
+   field1.growDendr(1, 2);
    while(time < 1000) {
       /* actions */
       if (neuronGrowth.TimeLeft             == 0 and
@@ -45,8 +49,14 @@ void Processor::Run() {
       }
       if (axonGrowth.TimeLeft               == 0 and
           axonGrowth.Enabled                == true) {
-         field1.growAxon(rand()%field1.getNumberOfCells(), 1); 
+         field1.growAxon(rand()%field1.getNumberOfCells(), 1);
          axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
+      }
+      if (dendrGrowth.TimeLeft              == 0 and
+          dendrGrowth.Enabled               == true
+          and time > 50) {
+         field1.growDendr(rand()%field1.getNumberOfCells(), 1);
+         dendrGrowth.TimeLeft          = rand()%AXONGROWTHCHARACTERTIME;
       }
       if (spontaneousActivity.TimeLeft      == 0
           and spontaneousActivity.Enabled   == true
@@ -70,6 +80,7 @@ void Processor::Run() {
       /* post actions */
       if (neuronGrowth.TimeLeft          != 0) {neuronGrowth.TimeLeft--;       }
       if (axonGrowth.TimeLeft            != 0) {axonGrowth.TimeLeft--;         }
+      if (dendrGrowth.TimeLeft           != 0) {dendrGrowth.TimeLeft--;        }
       if (spontaneousActivity.TimeLeft   != 0) {spontaneousActivity.TimeLeft--;}
       if (chargeBatteries.TimeLeft       != 0) {chargeBatteries.TimeLeft--;    }
       if (spreadImpulse.TimeLeft         != 0) {spreadImpulse.TimeLeft--;      }

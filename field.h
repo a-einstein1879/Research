@@ -10,7 +10,8 @@
 #define EMPTYFIELDSYMBOL ' '
 #define FIREDSYMBOL      'F'
 
-#define AXONANGLEPRECISENESS 2
+#define AXONANGLEPRECISENESS        2
+#define DENDRITEANGLEPRECISENESS    16
 
 class Field {
 protected:

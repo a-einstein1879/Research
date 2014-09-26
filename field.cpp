@@ -133,6 +133,51 @@ void NeuronField::growAxons(int maxLength) {
 };
 
 void NeuronField::growDendr(int NeuronId, int delta) {
+   Neuron* neuron = getNeuronById(NeuronId);
+   struct Coordinates coord;
+   coord = neuron->getCoord();
+   int dendrRad = neuron->getDendrRad();
+
+#ifdef TRACE
+         printf("Field: Starting growing neuron %d dendrite.\n", NeuronId);
+#endif
+
+   neuron->growDendr(delta);
+   for(int i = dendrRad; i < dendrRad + delta; i++) {
+      for(int j = 0; j < DENDRITEANGLEPRECISENESS; j++) {         
+         double angle = 2 * M_PI * double(j) / DENDRITEANGLEPRECISENESS;
+         int newx = 0, newy = 0;
+         newx = coord.CoordX + i * sin(angle);
+         newy = coord.CoordY + i * cos(angle);
+
+         if (newx > (XMAXSIZE - 1) or newx < 0 or newy > (YMAXSIZE - 1) or newy < 0
+             or ( newx == coord.CoordX and newy == coord.CoordY )) {
+             continue;
+         }
+
+         char stat = getFieldType(newx, newy);
+         if (stat == NEURONSYMBOL or stat == DENDRSYMBOL) {
+            Neuron* neuro;
+            neuro = getNeuronByField(newx, newy);
+            neuro->addConnection( getNeuronById(NeuronId) );
+
+#ifdef TRACE
+         printf("Field: Adding connection from neuron %d to neuron %d\n", neuro->getNeuronId(), NeuronId);
+#endif
+
+         int NumberOfConnections = neuro->getNumberOfConnections();
+
+#ifdef TRACE
+         if (maxNumberOfConnections < NumberOfConnections) {printf("maxNumberOfConnections increased to %d\n", NumberOfConnections);}
+#endif
+         maxNumberOfConnections = (maxNumberOfConnections < NumberOfConnections) ? NumberOfConnections : maxNumberOfConnections;
+
+         }
+         else {
+            fillField(newx, newy, DENDRSYMBOL, neuron->getNeuronId());
+         }
+      }
+   }
 };
 
 /**********************
@@ -200,10 +245,11 @@ void NeuronField::printFieldStat(int time) {
       struct Coordinates coord = neurons[i].getCoord();
       int axonLength           = neurons[i].getAxonLength();
       double axonAzimuth       = neurons[i].getAxonAzimuth();
+      int dendrRad             = neurons[i].getDendrRad();
       int batteryCharge        = neurons[i].getBatteryCharge();
       int numberOfConnections  = neurons[i].getNumberOfConnections();
-      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. BatteryCharge = %d. NumberOfConnections = %d\n", 
-                     i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, batteryCharge, numberOfConnections);
+      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. DendriteRad = %d. BatteryCharge = %d. NumberOfConnections = %d\n", 
+                     i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, dendrRad, batteryCharge, numberOfConnections);
       if (numberOfConnections > 0) { neurons[i].printConnections(); }
    }
 };
