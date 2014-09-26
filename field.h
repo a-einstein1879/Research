@@ -11,7 +11,8 @@
 #define FIREDSYMBOL           'F'
 #define NEURONIDINITIALVALUE  (-1)
 
-#define AXONANGLEPRECISENESS 2
+#define AXONANGLEPRECISENESS        2
+#define DENDRITEANGLEPRECISENESS    16
 
 class Field {
 protected:
@@ -51,7 +52,6 @@ public:
 **********************/
 
    int addNeuron(int x = -1, int y = -1);
-   void growAxons(int maxLength = 0);
    void growAxon(int NeuronId, int delta, double azimuth = -1); /* azimuth is an angle that is counted from positive part of y axis counterclockwise */
    void growDendr(int NeuronId, int delta);                     /* no functionality... yet */
 

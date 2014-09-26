@@ -88,16 +88,23 @@ int Neuron::growAxon(int length, double azimuth) {
 #ifdef TRACE
    printf("Cell: Axon end of neuron %d is (%d, %d) now\n", NeuronId, axonEnd.CoordX, axonEnd.CoordY);
 #endif
-   return 0;
+   return axon.Length;
 }
 
 int Neuron::growDendr(int delta) {
+#ifdef TRACE
+   printf("Cell: Trying to grow dendrite of neuron %d. Dendrity radius was %d", NeuronId, dendrRad);
+#endif
    dendrRad += delta;
-   return 0;
+
+#ifdef TRACE
+   printf("and is %d now\n", getDendrRad());
+#endif
+   return dendrRad;
 }
 
 int Neuron::addConnection(Neuron *tmpConnection) {
-   printf("Cell: Adding connection from neuron %d to neuron %d\n", NeuronId, tmpConnection->getNeuronId());
+   if (numberOfConnections >= MAXNUMBEROFCONNECTIONS) {return 0;}
 
 #ifdef TRACE
    printf("Cell: Added connection number %d\n", numberOfConnections + 1);

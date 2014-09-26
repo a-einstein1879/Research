@@ -58,8 +58,8 @@ public:
       Connections
 **********************/
 
-   int growAxon(int length, double azimuth = -1);
-   int growDendr(int delta);
+   int growAxon(int length, double azimuth = -1);  /* returns new axon length     */
+   int growDendr(int delta);                       /* returns new dendrite radius */
    int addConnection(Neuron *tmpConnection);
 
 /**********************

@@ -14,6 +14,9 @@ Processor::Processor() {
    axonGrowth.Enabled            = AXONGROWTH;
    axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
 
+   dendrGrowth.Enabled           = DENDRGROWTH;
+   dendrGrowth.TimeLeft          = rand()%DENDRGROWTHCHARACTERTIME;
+
    spontaneousActivity.Enabled   = SPONTANEOUSACTIVITY;
    spontaneousActivity.TimeLeft  = rand()%SPONTANEOUSACTIVITYCHARACTERTIME;
 
@@ -38,6 +41,7 @@ void Processor::Run() {
    field1.addNeuron(2, 10);
    field1.addNeuron(2, 15);
    field1.growAxon(1, 7, 0);
+   field1.growDendr(1, 2);
 #endif
    while(time < 1000) {
       /* actions */
@@ -49,8 +53,14 @@ void Processor::Run() {
       }
       if (axonGrowth.TimeLeft               == 0
       and axonGrowth.Enabled                == true) {
-         field1.growAxon(rand()%field1.getNumberOfCells(), 1); 
+         field1.growAxon(rand()%field1.getNumberOfCells(), 1);
          axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
+      }
+      if (dendrGrowth.TimeLeft              == 0
+      and dendrGrowth.Enabled               == true
+          and time > 50) {
+         field1.growDendr(rand()%field1.getNumberOfCells(), 1);
+         dendrGrowth.TimeLeft          = rand()%AXONGROWTHCHARACTERTIME;
       }
       if (spontaneousActivity.TimeLeft      == 0
       and spontaneousActivity.Enabled   == true
@@ -78,6 +88,7 @@ void Processor::Run() {
       /* post actions */
       if (neuronGrowth.TimeLeft          != 0) {neuronGrowth.TimeLeft--;       }
       if (axonGrowth.TimeLeft            != 0) {axonGrowth.TimeLeft--;         }
+      if (dendrGrowth.TimeLeft           != 0) {dendrGrowth.TimeLeft--;        }
       if (spontaneousActivity.TimeLeft   != 0) {spontaneousActivity.TimeLeft--;}
       if (chargeBatteries.TimeLeft       != 0) {chargeBatteries.TimeLeft--;    }
       if (spreadImpulse.TimeLeft         != 0) {spreadImpulse.TimeLeft--;      }

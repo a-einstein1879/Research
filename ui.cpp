@@ -73,6 +73,7 @@ void GUI::printNeuronalNetwork(NeuronField Field, int time) {
    for(int j = 0; j < YMAXSIZE; j++)
       for(int i = 0; i < XMAXSIZE; i++) {
          if (field[i][j] == NEURONSYMBOL)       {putpixel(i, j, NEURONCOLOR);    };
+         if (field[i][j] == DENDRSYMBOL)        {putpixel(i, j, DENDRITECOLOR);  };
          if (field[i][j] == AXONSYMBOL)         {putpixel(i, j, AXONCOLOR);      };
          if (field[i][j] == FIREDSYMBOL)        {putpixel(i, j, FIRINGCOLOR);    };
 //         if (field[i][j] == EMPTYFIELDSYMBOL)   {putpixel(i, j, EMPTYFIELDCOLOR);}; /* slows program too much. Needs thinking */
