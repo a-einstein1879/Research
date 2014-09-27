@@ -311,7 +311,8 @@ bool NeuronField::isAnyPlaceLeft() {
 
 void NeuronField::printFieldStat(int time) {
    if (time != -1) {printf("time = %d\n", time);}
-   printf("numberOfCells = %d\n", numberOfCells);
+   printf("numberOfCells = %d\nmaxNumberOfConnections = %d\n", numberOfCells, maxNumberOfConnections);
+#ifdef TEST
    for(int i = 0; i < numberOfCells; i++) {
       struct Coordinates coord = neurons[i].getCoord();
       int axonLength           = neurons[i].getAxonLength();
@@ -319,8 +320,9 @@ void NeuronField::printFieldStat(int time) {
       int dendrRad             = neurons[i].getDendrRad();
       int batteryCharge        = neurons[i].getBatteryCharge();
       int numberOfConnections  = neurons[i].getNumberOfConnections();
-      printf("Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. DendriteRad = %d. BatteryCharge = %d. NumberOfConnections = %d\n", 
+      printf("Field: Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. DendriteRad = %d. BatteryCharge = %d. NumberOfConnections = %d\n", 
                      i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, dendrRad, batteryCharge, numberOfConnections);
       if (numberOfConnections > 0) { neurons[i].printConnections(); }
    }
+#endif
 }

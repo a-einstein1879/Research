@@ -11,7 +11,7 @@
 #define FIREDSYMBOL           'F'
 #define NEURONIDINITIALVALUE  (-1)
 
-#define AXONANGLEPRECISENESS        2
+#define AXONANGLEPRECISENESS        16
 #define DENDRITEANGLEPRECISENESS    90
 
 class Field {

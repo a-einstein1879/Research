@@ -33,7 +33,7 @@ void Processor::RunAxonGrowth() {}
 void Processor::Run() {
    srand (time(NULL));
    NeuronField field1;
-   CLUI ui;
+   GUI ui;
    int time = 0;
 
 #ifdef TEST
@@ -44,7 +44,7 @@ void Processor::Run() {
    field1.growDendr(1, 2);
 #endif
 
-   while(time < 1000) {
+   while(1) {
       /* actions */
       if (neuronGrowth.TimeLeft             == 0
       and neuronGrowth.Enabled              == true
