@@ -4,11 +4,12 @@
 #include "cmn_struct.h"
 #include "cell.h"
 
-#define NEURONSYMBOL     'N'
-#define AXONSYMBOL       'A'
-#define DENDRSYMBOL      'D'
-#define EMPTYFIELDSYMBOL ' '
-#define FIREDSYMBOL      'F'
+#define NEURONSYMBOL          'N'
+#define AXONSYMBOL            'A'
+#define DENDRSYMBOL           'D'
+#define EMPTYFIELDSYMBOL      ' '
+#define FIREDSYMBOL           'F'
+#define NEURONIDINITIALVALUE  (-1)
 
 #define AXONANGLEPRECISENESS 2
 
@@ -25,7 +26,8 @@ private:
       Private data
 **********************/
    int maxNumberOfConnections;
-   char neuronField[XMAXSIZE][YMAXSIZE][FIELDNAMELENGTH];
+   char neuronType[XMAXSIZE][YMAXSIZE];
+   int neuronIds[XMAXSIZE][YMAXSIZE];
    Neuron *neurons;
 
 /**********************
@@ -69,6 +71,7 @@ public:
    char getFieldType(int x, int y); /* Should make it a friend of UI class */
    bool getSpotStat(int x, int y); /* For UI to get stat fired or not fired */
    void printFieldStat(int time = -1);
+   bool isAnyPlaceLeft();
 };
 
 #endif

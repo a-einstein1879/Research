@@ -24,8 +24,11 @@ NeuronField::NeuronField() {
 
    for(int i = 0; i < XMAXSIZE; i++)
       for(int j = 0; j < YMAXSIZE; j++)
-         for(int k = 0; k < FIELDNAMELENGTH; k++)
-            neuronField[i][j][k] = EMPTYFIELDSYMBOL;
+         neuronType[i][j] = EMPTYFIELDSYMBOL;
+
+   for(int i = 0; i < XMAXSIZE; i++)
+      for(int j = 0; j < YMAXSIZE; j++)
+         neuronIds[i][j] = NEURONIDINITIALVALUE;
 
    neurons = new Neuron[numberOfCells];
 }
@@ -80,14 +83,11 @@ void NeuronField::fillField(int x, int y, char type, int neuronId) {
    printf("Field: Field (%d, %d) was `%c` type", x, y, getFieldType(x, y));
 #endif
 
-   char id[FIELDNAMELENGTH];
-   snprintf(id, FIELDNAMELENGTH, "%d", neuronId);
-   neuronField[x][y][0] = type;
-   for(int i = 1; i < FIELDNAMELENGTH; i++)
-      neuronField[x][y][i] = id[i-1];
+   neuronType[x][y] = type;
+   neuronIds[x][y]  = neuronId;
 
 #ifdef TRACE
-   printf(" and now it`s `%c` type with id %s\n", getFieldType(x, y), neuronField[x][y] + 1);
+   printf(" and now it`s `%c` type with id %d\n", getFieldType(x, y), neuronIds[x][y]);
 #endif
 
 }
@@ -95,6 +95,14 @@ void NeuronField::fillField(int x, int y, char type, int neuronId) {
 void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    Neuron *neuron;
    neuron = getNeuronById(NeuronId);
+   if (neuron == NULL) {
+
+#ifdef TRACE
+   printf("Field: growAxon: getNeuronById returned NULL pointer\n");
+#endif
+      return;
+   }
+
    struct Coordinates coord;
    coord = neuron->getCoord();
    if (azimuth == -1) {azimuth = neuron->getAxonAzimuth();}
@@ -116,13 +124,21 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
       neuron->growAxon(i, azimuth);
       char stat = getFieldType(newx, newy);
       if (stat == NEURONSYMBOL or stat == DENDRSYMBOL) {
+         Neuron* neu = getNeuronByField(newx, newy);
+         if (neu == NULL) {
 
 #ifdef TRACE
-         Neuron* neu = getNeuronByField(newx, newx);
-         if (neu == NULL) {continue;}
-         printf("Field: Adding connection. From neuron %d to neuron %d in (%d, %d)\n", NeuronId, neu->getNeuronId(), newx, newy);
+            printf("Field: Going to next iteration due to NULL return value\n");
 #endif
-         neuron->addConnection(getNeuronByField(newx, newx));
+
+            continue;
+}
+         neuron->addConnection(neu);
+
+#ifdef TRACE
+         printf("Field: Added connection. From neuron %d to neuron %d in (%d, %d)\n", NeuronId, neu->getNeuronId(), newx, newy);
+#endif
+
          int NumberOfConnections = neuron->getNumberOfConnections();
 
 #ifdef TRACE
@@ -151,6 +167,14 @@ void NeuronField::fireNeuron(int NeuronId) {
    if (NeuronId == -1) {NeuronId = rand()%numberOfCells;}
    Neuron* neuron;
    neuron = getNeuronById(NeuronId);
+
+   if (neuron == NULL) {
+#ifdef TRACE
+   printf("Field: fireNeuron: getNeuronById returned NULL pointer\n");
+#endif
+      return;
+   }
+
    if ( !(neuron->checkIfFired()) ) {neuron->fire();}
 }
 
@@ -176,36 +200,55 @@ void NeuronField::unchargeBatteries() {
 bool NeuronField::getSpotStat(int x, int y) {
    Neuron* neuron;
    neuron = getNeuronByField(x, y);
+   if (neuron == NULL) {return 0;}
    return neuron->checkIfFired();
 }
 
 Neuron* NeuronField::getNeuronById(int neuronId) {
+   if ( neuronId < 0 or neuronId > numberOfCells ) {return NULL;}
+   Neuron* neuro = NULL;
+
    int realId = neurons[neuronId].getNeuronId();
-   if ( realId == neuronId) {return neurons + neuronId;}
+   if ( realId == neuronId) {neuro = neurons + neuronId;}
    else {
-      Neuron* neuro;
       for(int i = 0; i < numberOfCells; i++) {
          int realId = neurons[i].getNeuronId();
-         if ( realId == neuronId ) {return neurons + i;}
+         if ( realId == neuronId ) {neuro = neurons + i;}
       }
    }
+
 #ifdef TRACE
-         printf("Field: Can`t find a neuron with neuronId %d\n", neuronId);
+         if ( neuro == NULL ) {printf("Field: Can`t find a neuron with neuronId %d\n", neuronId);}
 #endif
+
+   return neuro;
 }
 
 char NeuronField::getFieldType(int x, int y) {
-   return neuronField[x][y][0];
+   return neuronType[x][y];
 }
 
 Neuron* NeuronField::getNeuronByField(int x, int y) {
+printf("Field: Getting neuron by field (%d, %d)\n", x, y);
    Neuron* ret = NULL;
 
+   if ( getFieldType(x, y) != EMPTYFIELDSYMBOL ) {
+      int neuronId = neuronIds[x][y];
+      ret = getNeuronById(neuronId);
+   }
 
-   int neuronId = CharToInt(neuronField[x][y] + IDOFFSET, FIELDNAMELENGTH - IDOFFSET);
+#ifdef TRACE
+         if (ret == NULL) {printf("Field: Can`t get neuron in (%d, %d)\n",     x, y);}
+         else             {printf("Field: Trying to get neuron in (%d, %d)\n", x, y);}
+#endif
 
-   ret = getNeuronById(neuronId);
    return ret;
+}
+
+bool NeuronField::isAnyPlaceLeft() {
+   bool isAnyPlace = false;
+   if ( numberOfCells < (MAXNUMBEROFNEURONS) ) {isAnyPlace = true;}
+   return isAnyPlace;
 }
 
 /**********************

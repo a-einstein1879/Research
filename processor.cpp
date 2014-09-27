@@ -36,34 +36,35 @@ void Processor::Run() {
    field1.addNeuron(2, 12);
    field1.addNeuron(2, 10);
    field1.addNeuron(2, 15);
-   field1.growAxon(1, 10, 0);
+   field1.growAxon(1, 7, 0);
    while(time < 1000) {
       /* actions */
-      if (neuronGrowth.TimeLeft             == 0 and
-          neuronGrowth.Enabled              == true) {
+      if (neuronGrowth.TimeLeft             == 0
+      and neuronGrowth.Enabled              == true
+      and field1.isAnyPlaceLeft()           == true) {
          field1.addNeuron(); 
          neuronGrowth.TimeLeft         = rand()%NEURONGROWTHCHARACTERTIME;
       }
-      if (axonGrowth.TimeLeft               == 0 and
-          axonGrowth.Enabled                == true) {
+      if (axonGrowth.TimeLeft               == 0
+      and axonGrowth.Enabled                == true) {
          field1.growAxon(rand()%field1.getNumberOfCells(), 1); 
          axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
       }
       if (spontaneousActivity.TimeLeft      == 0
-          and spontaneousActivity.Enabled   == true
-          and time > 50) {
+      and spontaneousActivity.Enabled   == true
+      and time > 50) {
          field1.fireNeuron();
          spontaneousActivity.TimeLeft  = rand()%SPONTANEOUSACTIVITYCHARACTERTIME;
       }
-      if (chargeBatteries.TimeLeft          == 0 and
-          chargeBatteries.Enabled           == true
-          and time > 70) {
+      if (chargeBatteries.TimeLeft          == 0
+      and chargeBatteries.Enabled           == true
+      and time > 70) {
          field1.chargeBatteries();
          chargeBatteries.TimeLeft      = rand()%CHARGEBATTERIESCHARACTERTIME;
       }
-      if (spreadImpulse.TimeLeft            == 0 and
-          spreadImpulse.Enabled             == true
-          and time > 50) {
+      if (spreadImpulse.TimeLeft            == 0
+      and spreadImpulse.Enabled             == true
+      and time > 50) {
          field1.spreadImpulse();
          spreadImpulse.TimeLeft        = rand()%SPREADIMPULSECHARACTERTIME;
       }
