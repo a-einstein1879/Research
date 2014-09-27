@@ -109,24 +109,14 @@ int Neuron::addConnection(Neuron *tmpConnection) {
 #ifdef TRACE
    printf("Cell: Added connection number %d\n", numberOfConnections + 1);
 #endif
-   if (numberOfConnections < MAXNUMBEROFCONNECTIONSPERNEURON) {
+   bool isAlreadyConnected = false;
+   for(int i = 0; i < numberOfConnections; i++)
+      if (connection[i]->getNeuronId() == tmpConnection->getNeuronId()) {isAlreadyConnected = true;}
+   if (numberOfConnections < MAXNUMBEROFCONNECTIONSPERNEURON
+   and isAlreadyConnected == false) {
       connection[numberOfConnections++] = tmpConnection;
    }
    return 0;
-/*
-   Neuron **TmpConnection;
-   TmpConnection = new Neuron*[numberOfConnections];
-   for(int i = 0; i < numberOfConnections; i++)
-      TmpConnection[i] = connection[i];
-
-   connection = new Neuron*[++numberOfConnections];
-
-   for(int i = 0; i < numberOfConnections - 1; i++)
-      connection[i] = TmpConnection[i];
-
-   delete [] TmpConnection;
-
-   connection[numberOfConnections - 1] = tmpConnection;*/
 }
 
 /**********************

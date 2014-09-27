@@ -12,7 +12,7 @@
 #define NEURONIDINITIALVALUE  (-1)
 
 #define AXONANGLEPRECISENESS        2
-#define DENDRITEANGLEPRECISENESS    16
+#define DENDRITEANGLEPRECISENESS    90
 
 class Field {
 protected:
