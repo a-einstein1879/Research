@@ -60,7 +60,7 @@ public:
 **********************/
 
    void fireNeuron(int NeuronId = -1);
-   void spreadImpulse();
+   void spreadImpulse(int NeuronId = -1);
    void chargeBatteries();
    void unchargeBatteries();
 

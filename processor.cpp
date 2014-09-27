@@ -33,10 +33,12 @@ void Processor::Run() {
    CLUI ui;
    int time = 0;
 
+#ifdef TEST
    field1.addNeuron(2, 12);
    field1.addNeuron(2, 10);
    field1.addNeuron(2, 15);
    field1.growAxon(1, 7, 0);
+#endif
    while(time < 1000) {
       /* actions */
       if (neuronGrowth.TimeLeft             == 0
@@ -69,6 +71,10 @@ void Processor::Run() {
          spreadImpulse.TimeLeft        = rand()%SPREADIMPULSECHARACTERTIME;
       }
 
+
+#ifdef TEST
+   if (time == 45) {field1.spreadImpulse(1);}
+#endif
       /* post actions */
       if (neuronGrowth.TimeLeft          != 0) {neuronGrowth.TimeLeft--;       }
       if (axonGrowth.TimeLeft            != 0) {axonGrowth.TimeLeft--;         }
@@ -80,6 +86,10 @@ void Processor::Run() {
       /* printing actions */
       ui.printNeuronalNetwork(field1, time++);
 
-      usleep(time>50?DELAYTIME*10:DELAYTIME);
+#ifdef TEST
+      usleep(time>45?DELAYTIME*50:DELAYTIME);
+#else
+      usleep(DELAYTIME);
+#endif
    }
 }

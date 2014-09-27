@@ -8,7 +8,7 @@
 #define AXONGROWTHCHARACTERTIME           100
 #define SPONTANEOUSACTIVITYCHARACTERTIME  10
 #define CHARGEBATTERIESCHARACTERTIME      5
-#define SPREADIMPULSECHARACTERTIME        1
+#define SPREADIMPULSECHARACTERTIME        2
 
 #define DELAYTIME             50000
 
@@ -16,7 +16,7 @@
 #define AXONGROWTH            true
 #define SPONTANEOUSACTIVITY   true
 #define CHARGEBATTERIES       true
-#define SPREADIMPULSE         false
+#define SPREADIMPULSE         true
 
 class Processor {
 private:

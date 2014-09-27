@@ -178,9 +178,18 @@ void NeuronField::fireNeuron(int NeuronId) {
    if ( !(neuron->checkIfFired()) ) {neuron->fire();}
 }
 
-void NeuronField::spreadImpulse() {
-   for(int i = 0; i < numberOfCells; i++)
-      neurons[i].spreadImpulse();
+void NeuronField::spreadImpulse(int NeuronId) {
+   if (NeuronId == -1) {
+      for(int i = 0; i < numberOfCells; i++)
+         neurons[i].spreadImpulse();
+   }
+   else {
+      Neuron* neu = getNeuronById(NeuronId);
+      if (neu != NULL) {
+         if ( !(neuron->checkIfFired()) ) {neu->fire();}
+         neu->spreadImpulse();
+      }
+   }
 }
 
 void NeuronField::chargeBatteries() {
