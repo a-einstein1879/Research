@@ -280,7 +280,10 @@ char NeuronField::getFieldType(int x, int y) {
 }
 
 Neuron* NeuronField::getNeuronByField(int x, int y) {
-printf("Field: Getting neuron by field (%d, %d)\n", x, y);
+
+#ifdef TRACE
+   printf("Field: Getting neuron by field (%d, %d)\n", x, y);
+#endif
    Neuron* ret = NULL;
 
    if ( getFieldType(x, y) != EMPTYFIELDSYMBOL ) {

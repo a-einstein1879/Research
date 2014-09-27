@@ -43,6 +43,7 @@ void Processor::Run() {
    field1.growAxon(1, 7, 0);
    field1.growDendr(1, 2);
 #endif
+
    while(time < 1000) {
       /* actions */
       if (neuronGrowth.TimeLeft             == 0
@@ -52,30 +53,35 @@ void Processor::Run() {
          neuronGrowth.TimeLeft         = rand()%NEURONGROWTHCHARACTERTIME;
       }
       if (axonGrowth.TimeLeft               == 0
-      and axonGrowth.Enabled                == true) {
+      and axonGrowth.Enabled                == true
+      and field1.getNumberOfCells()         != 0) {
          field1.growAxon(rand()%field1.getNumberOfCells(), 1);
          axonGrowth.TimeLeft           = rand()%AXONGROWTHCHARACTERTIME;
       }
       if (dendrGrowth.TimeLeft              == 0
       and dendrGrowth.Enabled               == true
-          and time > 50) {
+      and field1.getNumberOfCells()         != 0
+      and time > 50) {
          field1.growDendr(rand()%field1.getNumberOfCells(), 1);
-         dendrGrowth.TimeLeft          = rand()%AXONGROWTHCHARACTERTIME;
+         dendrGrowth.TimeLeft          = rand()%DENDRGROWTHCHARACTERTIME;
       }
       if (spontaneousActivity.TimeLeft      == 0
       and spontaneousActivity.Enabled   == true
+      and field1.getNumberOfCells()         != 0
       and time > 50) {
          field1.fireNeuron();
          spontaneousActivity.TimeLeft  = rand()%SPONTANEOUSACTIVITYCHARACTERTIME;
       }
       if (chargeBatteries.TimeLeft          == 0
       and chargeBatteries.Enabled           == true
+      and field1.getNumberOfCells()         != 0
       and time > 70) {
          field1.chargeBatteries();
          chargeBatteries.TimeLeft      = rand()%CHARGEBATTERIESCHARACTERTIME;
       }
       if (spreadImpulse.TimeLeft            == 0
       and spreadImpulse.Enabled             == true
+      and field1.getNumberOfCells()         != 0
       and time > 50) {
          field1.spreadImpulse();
          spreadImpulse.TimeLeft        = rand()%SPREADIMPULSECHARACTERTIME;
@@ -99,8 +105,7 @@ void Processor::Run() {
 
 #ifdef TEST
       usleep(time>45?DELAYTIME*50:DELAYTIME);
-#else
-      usleep(DELAYTIME);
 #endif
+      usleep(DELAYTIME);
    }
 }
