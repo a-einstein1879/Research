@@ -61,7 +61,7 @@ public:
 
    void fireNeuron(int NeuronId = -1);
    void spreadImpulse(int NeuronId = -1);
-   void chargeBatteries();
+   void chargeBatteries(int delta = 1);
    void unchargeBatteries();
 
 /**********************
@@ -72,6 +72,7 @@ public:
    bool getSpotStat(int x, int y); /* For UI to get stat fired or not fired */
    void printFieldStat(int time = -1);
    bool isAnyPlaceLeft();
+   int getMaxNumberOfConnections();
 };
 
 #endif

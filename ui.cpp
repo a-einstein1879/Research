@@ -70,6 +70,9 @@ void GUI::printNeuronalNetwork(NeuronField Field, int time) {
          if ( field[x][y] != EMPTYFIELDSYMBOL ) {field[x][y] = Field.getSpotStat(x, y) ? FIREDSYMBOL : field[x][y];}
       }
 
+   system("clear");
+   Field.printFieldStat(time);
+//   if ( time%( Field.getMaxNumberOfConnections() < 10 ? 50 : 5 ) != 0 ) {return;}
    for(int j = 0; j < YMAXSIZE; j++)
       for(int i = 0; i < XMAXSIZE; i++) {
          if (field[i][j] == NEURONSYMBOL)       {putpixel(i, j, NEURONCOLOR);    };
@@ -78,6 +81,4 @@ void GUI::printNeuronalNetwork(NeuronField Field, int time) {
          if (field[i][j] == FIREDSYMBOL)        {putpixel(i, j, FIRINGCOLOR);    };
 //         if (field[i][j] == EMPTYFIELDSYMBOL)   {putpixel(i, j, EMPTYFIELDCOLOR);}; /* slows program too much. Needs thinking */
       }
-   system("clear");
-   Field.printFieldStat(time);
 }

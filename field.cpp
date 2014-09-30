@@ -221,9 +221,16 @@ void NeuronField::fireNeuron(int NeuronId) {
 }
 
 void NeuronField::spreadImpulse(int NeuronId) {
+   bool *isFired;
+   isFired = new bool[numberOfCells];
+   for(int i = 0; i < numberOfCells; i++) {
+      isFired[i] = neurons[i].checkIfFired();
+      printf("Neuron number %d is %d\n", i, isFired[i]);
+   }
+   
    if (NeuronId == -1) {
       for(int i = 0; i < numberOfCells; i++)
-         neurons[i].spreadImpulse();
+         if(isFired[i] == 1) {neurons[i].spreadImpulse();}
    }
    else {
       Neuron* neu = getNeuronById(NeuronId);
@@ -232,11 +239,12 @@ void NeuronField::spreadImpulse(int NeuronId) {
          neu->spreadImpulse();
       }
    }
+   delete [] isFired;
 }
 
-void NeuronField::chargeBatteries() {
+void NeuronField::chargeBatteries(int delta) {
    for(int i = 0; i < numberOfCells; i++)
-      neurons[i].chargeBattery();
+      neurons[i].chargeBattery(delta);
 }
 
 void NeuronField::unchargeBatteries() {
@@ -305,6 +313,10 @@ bool NeuronField::isAnyPlaceLeft() {
    return isAnyPlace;
 }
 
+int NeuronField::getMaxNumberOfConnections() {
+   return maxNumberOfConnections;
+}
+
 /**********************
       Print. TODO:Can be really good to move it to UI
 **********************/
@@ -312,7 +324,7 @@ bool NeuronField::isAnyPlaceLeft() {
 void NeuronField::printFieldStat(int time) {
    if (time != -1) {printf("time = %d\n", time);}
    printf("numberOfCells = %d\nmaxNumberOfConnections = %d\n", numberOfCells, maxNumberOfConnections);
-#ifdef TEST
+//#ifdef TEST
    for(int i = 0; i < numberOfCells; i++) {
       struct Coordinates coord = neurons[i].getCoord();
       int axonLength           = neurons[i].getAxonLength();
@@ -320,9 +332,10 @@ void NeuronField::printFieldStat(int time) {
       int dendrRad             = neurons[i].getDendrRad();
       int batteryCharge        = neurons[i].getBatteryCharge();
       int numberOfConnections  = neurons[i].getNumberOfConnections();
-      printf("Field: Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. DendriteRad = %d. BatteryCharge = %d. NumberOfConnections = %d\n", 
-                     i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, dendrRad, batteryCharge, numberOfConnections);
+      bool isFired             = neurons[i].checkIfFired();
+      printf("Field: Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. DendriteRad = %d. BatteryCharge = %d. NumberOfConnections = %d. IsFired = %d\n", 
+                     i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, dendrRad, batteryCharge, numberOfConnections, isFired);
       if (numberOfConnections > 0) { neurons[i].printConnections(); }
    }
-#endif
+//#endif
 }

@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+#include <math.h>
+#include <stdio.h>
 
 Processor::Processor() {
    neuronGrowth.Enabled          = NEURONGROWTH;
@@ -30,11 +32,49 @@ Processor::Processor() {
 void Processor::RunNeuronGrowth() {}
 void Processor::RunAxonGrowth() {}
 
+void Processor::Scenario1(NeuronField field) {
+   for(int i = 0; i < 10; i++) {
+      field.addNeuron(30 + 50 * i , 150);  
+      field.growDendr(i, 10);     
+      field.growAxon(i, 50, M_PI/2);
+      field.chargeBatteries(5);
+   }
+   field.fireNeuron(0);
+}
+
 void Processor::Run() {
    srand (time(NULL));
    NeuronField field1;
    GUI ui;
    int time = 0;
+//   Scenario1(field1);
+
+#define Scenario1
+#ifdef Scenario1
+/* grow neurons */
+   for(int i = 0; i < 10; i++) {
+      field1.addNeuron(30 + 50 * i , 150);
+      field1.growDendr(i, 10);
+   }
+
+   for(int i = 0; i < 10; i++) {
+      field1.addNeuron(480 - 50 * i , 250);
+      field1.growDendr(10 + i, 10);
+   }
+
+/* grow axons */
+   for(int i = 0; i < 9; i++) {
+      field1.growAxon(i, 50, M_PI / 2);
+   }
+   field1.growAxon(9, 100, 0);
+   for(int i = 0; i < 9; i++) {
+      field1.growAxon(10 + i, 50, 3 * M_PI / 2);
+   }
+   field1.growAxon(19, 100, M_PI);
+
+   field1.chargeBatteries(10);
+   field1.fireNeuron(0);
+#endif
 
 #ifdef TEST
    field1.addNeuron(2, 12);
@@ -44,7 +84,7 @@ void Processor::Run() {
    field1.growDendr(1, 2);
 #endif
 
-   while(1) {
+   while(time < 150) {
       /* actions */
       if (neuronGrowth.TimeLeft             == 0
       and neuronGrowth.Enabled              == true
@@ -74,15 +114,13 @@ void Processor::Run() {
       }
       if (chargeBatteries.TimeLeft          == 0
       and chargeBatteries.Enabled           == true
-      and field1.getNumberOfCells()         != 0
-      and time > 70) {
+      and field1.getNumberOfCells()         != 0) {
          field1.chargeBatteries();
          chargeBatteries.TimeLeft      = rand()%CHARGEBATTERIESCHARACTERTIME;
       }
       if (spreadImpulse.TimeLeft            == 0
       and spreadImpulse.Enabled             == true
-      and field1.getNumberOfCells()         != 0
-      and time > 50) {
+      and field1.getNumberOfCells()         != 0) {
          field1.spreadImpulse();
          spreadImpulse.TimeLeft        = rand()%SPREADIMPULSECHARACTERTIME;
       }

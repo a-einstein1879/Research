@@ -138,8 +138,8 @@ void Neuron::spreadImpulse() {
    }
 }
 
-void Neuron::chargeBattery() {
-   if (!(isFired)) {batteryCharge++;}
+void Neuron::chargeBattery(int delta) {
+   if (!(isFired)) {batteryCharge += delta;}
 }
 
 void Neuron::unchargeBattery() {

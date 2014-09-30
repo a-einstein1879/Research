@@ -3,7 +3,7 @@
 
 #include "cmn_struct.h"
 
-#define STARTBATTERYCHARGE                3
+#define STARTBATTERYCHARGE                0
 #define MAXNUMBEROFCONNECTIONSPERNEURON   10
 
 /**********************
@@ -69,7 +69,7 @@ public:
    bool checkIfFired();
    void fire();
    void spreadImpulse();
-   void chargeBattery();
+   void chargeBattery(int delta = 1);
    void unchargeBattery();
    void printConnections();
 
