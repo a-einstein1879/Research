@@ -10,7 +10,9 @@ private:
    struct Process neuronGrowth, axonGrowth, dendrGrowth, spontaneousActivity, chargeBatteries, spreadImpulse;
    void RunNeuronGrowth();
    void RunAxonGrowth();
+/* Scenarios */
    void BuildScenario1(NeuronField* field);
+   void BuildScenario2(NeuronField* field);
 public:
    Processor();
    void Run();

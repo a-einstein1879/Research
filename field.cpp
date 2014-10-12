@@ -225,7 +225,10 @@ void NeuronField::spreadImpulse(int NeuronId) {
    isFired = new bool[numberOfCells];
    for(int i = 0; i < numberOfCells; i++) {
       isFired[i] = neurons[i].checkIfFired();
+
+#ifdef TRACE
       PRINTTRACE("Field", "Neuron number %d is %d\n", i, isFired[i]);
+#endif
    }
    
    if (NeuronId == -1) {

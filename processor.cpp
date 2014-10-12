@@ -41,6 +41,10 @@ void Processor::Run() {
    BuildScenario1(&field1);
 #endif
 
+#ifdef BUILDSCENARIO2
+   BuildScenario2(&field1);
+#endif
+
 #ifdef TEST
    field1.addNeuron(2, 12);
    field1.addNeuron(2, 10);
@@ -88,10 +92,6 @@ void Processor::Run() {
          spreadImpulse.TimeLeft        = rand()%SPREADIMPULSECHARACTERTIME;
       }
 
-
-#ifdef TEST
-   if (time == 45) {field1.spreadImpulse(1);}
-#endif
       /* post actions */
       if (neuronGrowth.TimeLeft          != 0) {neuronGrowth.TimeLeft--;       }
       if (axonGrowth.TimeLeft            != 0) {axonGrowth.TimeLeft--;         }
@@ -112,7 +112,7 @@ void Processor::Run() {
 }
 
 void Processor::BuildScenario1(NeuronField* field) {
-/* grow neurons */
+/* grow neurons and dendr */
    for(int i = 0; i < 10; i++) {
       field->addNeuron(30 + 50 * i , 150);
       field->growDendr(i, 10);
@@ -145,4 +145,12 @@ void Processor::BuildScenario1(NeuronField* field) {
 /* activity */
    field->chargeBatteries(7);
    field->fireNeuron(0);
+}
+
+void Processor::BuildScenario2(NeuronField* field) {
+   for(int i = 0; i < MAXNUMBEROFNEURONS; i++) {
+      field->addNeuron();
+    //  field->growAxon(rand()%field->getNumberOfCells(), 1);
+    //  field->growDendr(rand()%field->getNumberOfCells(), 1);
+   }
 }

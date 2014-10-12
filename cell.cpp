@@ -48,7 +48,7 @@ Neuron::Neuron(int x, int y) {
       isFired = false;
       batteryCharge = STARTBATTERYCHARGE;
    }
-   else { //TODO:Add destructor calling for not creating new object
+   else {
       PRINTTRACE("Cell", "Can`t create a new neuron with counter %d. Maximum number of cells exceeded\n", NeuronCounter);
    }
 }
@@ -80,10 +80,12 @@ void Neuron::resetIdCounter() {
 
 int Neuron::growAxon(int length, double azimuth) {
    if (azimuth == -1) {azimuth = axon.Azimuth;}
-   axon.Length  = length;
-   axon.Azimuth = azimuth;
    axonEnd.CoordX = coord.CoordX + (int) double(length) * sin(azimuth);
    axonEnd.CoordY = coord.CoordY + (int) double(length) * cos(azimuth);
+
+   if(axonEnd.CoordX <= 0 or axonEnd.CoordX >= XMAXSIZE or axonEnd.CoordY <= YMAXSIZE or axonEnd.CoordY >= YMAXSIZE) {return -1;}
+   axon.Length  = length;
+   axon.Azimuth = azimuth;
 
 #ifdef TRACE
    PRINTTRACE("Cell", "Axon end of neuron %d is (%d, %d) now\n", NeuronId, axonEnd.CoordX, axonEnd.CoordY);
@@ -93,7 +95,7 @@ int Neuron::growAxon(int length, double azimuth) {
 
 int Neuron::growDendr(int delta) {
 #ifdef TRACE
-   PRINTTRACE("Cell", "Trying to grow dendrite of neuron %d. Dendrity radius was %d", NeuronId, dendrRad);
+   PRINTTRACE("Cell", "Trying to grow dendrite of neuron %d. Dendrite radius was %d", NeuronId, dendrRad);
 #endif
    dendrRad += delta;
 
