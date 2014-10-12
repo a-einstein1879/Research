@@ -330,6 +330,7 @@ void NeuronField::printFieldStat(int time) {
    for(int i = 0; i < numberOfCells; i++)
       numberOfFiredNeurons += neurons[i].checkIfFired();
    PRINTTRACE("Field", "numberOfCells = %d\nmaxNumberOfConnections = %d\nnumberOfFiredNeurons = %d\n", numberOfCells, maxNumberOfConnections, numberOfFiredNeurons);
+   PrintFile(NUMBEROFFIREDNEURONS, "%d\t%d", time, numberOfFiredNeurons);
 #ifdef TEST
    for(int i = 0; i < numberOfCells; i++) {
       struct Coordinates coord = neurons[i].getCoord();

@@ -130,6 +130,18 @@
 /*        end        */
 /*********************/
 
+/*********************/
+/*       Files       */
+/*********************/
+#define ACTIVITYFILE "./outputFolder/activityFile.txt"
+
+/* file IDs */
+#define NUMBEROFFIREDNEURONS  1
+
+/*********************/
+/*        end        */
+/*********************/
+
 #include <stdio.h>
 /*********************/
 /*       Macro       */
@@ -145,6 +157,21 @@
 
 #define Message(msg)                  \
    printf(msg);
+
+/*
+   numberOfFiredNeurons - activity file
+*/
+#define PrintFile(dataType, format, ...)        \
+   switch(dataType) {                           \
+      case NUMBEROFFIREDNEURONS:                \
+         FILE *fd;                              \
+         fd=fopen(ACTIVITYFILE,"a+");           \
+         fprintf(fd, format, __VA_ARGS__);      \
+         fprintf(fd, "\n");                     \
+         fclose(fd);                            \
+         break;                                 \
+   }
+
 
 /*********************/
 /*        end        */
