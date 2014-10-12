@@ -7,16 +7,17 @@
 #define NEURONGROWTHCHARACTERTIME         1
 #define AXONGROWTHCHARACTERTIME           5
 #define DENDRGROWTHCHARACTERTIME          10
-#define SPONTANEOUSACTIVITYCHARACTERTIME  10
-#define CHARGEBATTERIESCHARACTERTIME      8
+#define SPONTANEOUSACTIVITYCHARACTERTIME  20
+#define CHARGEBATTERIESCHARACTERTIME      7
 #define SPREADIMPULSECHARACTERTIME        5
 
+#define MAXTIME               250000
 #define DELAYTIME             10000
 
-#define NEURONGROWTH          false
-#define AXONGROWTH            false
-#define DENDRGROWTH           false
-#define SPONTANEOUSACTIVITY   false
+#define NEURONGROWTH          true
+#define AXONGROWTH            true
+#define DENDRGROWTH           true
+#define SPONTANEOUSACTIVITY   true
 #define CHARGEBATTERIES       true
 #define SPREADIMPULSE         true
 

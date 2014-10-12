@@ -323,8 +323,11 @@ int NeuronField::getMaxNumberOfConnections() {
 
 void NeuronField::printFieldStat(int time) {
    if (time != -1) {printf("time = %d\n", time);}
-   printf("numberOfCells = %d\nmaxNumberOfConnections = %d\n", numberOfCells, maxNumberOfConnections);
-//#ifdef TEST
+   int numberOfFiredNeurons = 0;
+   for(int i = 0; i < numberOfCells; i++)
+      numberOfFiredNeurons += neurons[i].checkIfFired();
+   printf("numberOfCells = %d\nmaxNumberOfConnections = %d\nnumberOfFiredNeurons = %d\n", numberOfCells, maxNumberOfConnections, numberOfFiredNeurons);
+#ifdef TEST
    for(int i = 0; i < numberOfCells; i++) {
       struct Coordinates coord = neurons[i].getCoord();
       int axonLength           = neurons[i].getAxonLength();
@@ -337,5 +340,5 @@ void NeuronField::printFieldStat(int time) {
                      i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, dendrRad, batteryCharge, numberOfConnections, isFired);
       if (numberOfConnections > 0) { neurons[i].printConnections(); }
    }
-//#endif
+#endif
 }
