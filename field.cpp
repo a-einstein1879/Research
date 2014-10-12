@@ -93,10 +93,14 @@ void NeuronField::fillField(int x, int y, char type, int neuronId) {
 }
 
 void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
+#ifdef TRACE
+   Message("Field.cpp: growAxon function ENTER\n");
+#endif
+
    Neuron *neuron;
    neuron = getNeuronById(NeuronId);
-   if (neuron == NULL) {
 
+   if (neuron == NULL) {
 #ifdef TRACE
    Message("Field.cpp: growAxon: getNeuronById returned NULL pointer\n");
 #endif
@@ -110,6 +114,7 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    if (azimuth == -1) {azimuth = 2 * M_PI * double (rand()%AXONANGLEPRECISENESS + 1) / AXONANGLEPRECISENESS;} 
                       /* If it`s still -1 it means there was no azimuth. We choose random direction */
    int axonLength = neuron->getAxonLength();
+   if (axonLength >= MAXAXONLENGHT) {return;}
 
 #ifdef TRACE
    PRINTTRACE("Field", "Axon starts growing. Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
@@ -154,10 +159,14 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
 }
 
 void NeuronField::growDendr(int NeuronId, int delta) {
+#ifdef TRACE
+   Message("Field.cpp: growDendr function ENTER\n");
+#endif
    Neuron* neuron = getNeuronById(NeuronId);
    struct Coordinates coord;
    coord = neuron->getCoord();
    int dendrRad = neuron->getDendrRad();
+   if (dendrRad >= MAXDENDRITERADIUS) {return;}
 
 #ifdef TRACE
          PRINTTRACE("Field", "Starting growing neuron %d dendrite.\n", NeuronId);
@@ -326,11 +335,14 @@ int NeuronField::getMaxNumberOfConnections() {
 
 void NeuronField::printFieldStat(int time) {
    if (time != -1) {PRINTTRACE("Field", "time = %d\n", time);}
+
    int numberOfFiredNeurons = 0;
    for(int i = 0; i < numberOfCells; i++)
       numberOfFiredNeurons += neurons[i].checkIfFired();
-   PRINTTRACE("Field", "numberOfCells = %d\nmaxNumberOfConnections = %d\nnumberOfFiredNeurons = %d\n", numberOfCells, maxNumberOfConnections, numberOfFiredNeurons);
    PrintFile(NUMBEROFFIREDNEURONS, "%d\t%d", time, numberOfFiredNeurons);
+
+   PRINTTRACE("Field", "numberOfCells = %d\nmaxNumberOfConnections = %d\nnumberOfFiredNeurons = %d\n", numberOfCells, maxNumberOfConnections, numberOfFiredNeurons);
+
 #ifdef TEST
    for(int i = 0; i < numberOfCells; i++) {
       struct Coordinates coord = neurons[i].getCoord();

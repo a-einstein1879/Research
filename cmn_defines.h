@@ -36,6 +36,8 @@
 
 #define MAXNUMBEROFCONNECTIONS            1000
 #define MAXNUMBEROFCONNECTIONSPERNEURON   10
+#define MAXAXONLENGHT                     10
+#define MAXDENDRITERADIUS                 4
 
 /* preciseness */
 #define AXONANGLEPRECISENESS              16
@@ -91,6 +93,8 @@
 #define XMAXSIZE                          600
 #define YMAXSIZE                          400
 #define MAXNUMBEROFNEURONS                30
+#define MAXAXONLENGHT                     60
+#define MAXDENDRITELENGTH                 15
 
 #define NEURONGROWTH                      false
 #define AXONGROWTH                        false
@@ -133,10 +137,13 @@
 /*********************/
 /*       Files       */
 /*********************/
-#define ACTIVITYFILE "./outputFolder/activityFile.txt"
+#define ACTIVITYFILE                   "./outputFolder/activityFile.txt"
+#define NUMBEROFCONNECTIONSFILE        "./outputFolder/numberOfConnectionsFile.txt"
 
 /* file IDs */
 #define NUMBEROFFIREDNEURONS  1
+#define NUMBEROFCONNECTIONS   2
+
 
 /*********************/
 /*        end        */
@@ -162,16 +169,15 @@
    numberOfFiredNeurons - activity file
 */
 #define PrintFile(dataType, format, ...)        \
+   FILE *fd;                                    \
    switch(dataType) {                           \
       case NUMBEROFFIREDNEURONS:                \
-         FILE *fd;                              \
          fd=fopen(ACTIVITYFILE,"a+");           \
          fprintf(fd, format, __VA_ARGS__);      \
          fprintf(fd, "\n");                     \
          fclose(fd);                            \
          break;                                 \
    }
-
 
 /*********************/
 /*        end        */

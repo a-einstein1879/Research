@@ -37,6 +37,7 @@ void Processor::Run() {
    WorkingUI ui;
    int time = 0;
 
+/* building scenarios */
 #ifdef BUILDSCENARIO1
    BuildScenario1(&field1);
 #endif
