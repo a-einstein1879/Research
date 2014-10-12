@@ -2,7 +2,6 @@
 #include "cell.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include <graphics.h>
 #include <X11/Xlib.h> //for XinitThreads function
@@ -22,16 +21,16 @@ void CLUI::printNeuronalNetwork(NeuronField Field, int time) {
          if ( field[x][y] != EMPTYFIELDSYMBOL ) {field[x][y] = Field.getSpotStat(x, y) ? FIREDSYMBOL : field[x][y];}
       }   
 
-   printf("\t");
+   Message("\t");
    for(int i = 0; i < XMAXSIZE; i++)
-      printf("%d ", i);
+      Print("%d ", i);
 
    for(int j = 0; j < YMAXSIZE; j++) {
-      printf("\n%d\t", j);
+      Print("\n%d\t", j);
       for(int i = 0; i < XMAXSIZE; i++)
-         printf("%c ", field[i][j]);
+         Print("%c ", field[i][j]);
    }
-   printf("\n");
+   Message("\n");
    Field.printFieldStat(time);
 }
 

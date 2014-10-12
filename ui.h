@@ -2,12 +2,7 @@
 #define UI_H
 
 #include "field.h"
-
-#define NEURONCOLOR     GREEN
-#define AXONCOLOR       WHITE
-#define DENDRITECOLOR   YELLOW
-#define FIRINGCOLOR     RED
-#define EMPTYFIELDCOLOR BLACK
+#include "cmn_defines.h"
 
 class UI {
 private:

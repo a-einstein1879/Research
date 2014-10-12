@@ -1,12 +1,7 @@
 #ifndef CMN_STRUCT_H
 #define CMN_STRUCT_H
 
-
-#define XMAXSIZE 600
-#define YMAXSIZE 400
-#define MAXNUMBEROFNEURONS 1000
-#define MAXNUMBEROFCONNECTIONS 1000
-#define FIRSTNEURONNUMBER 0
+#include "cmn_defines.h"
 
 struct Process {
    int  ProcessId;

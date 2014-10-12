@@ -7,7 +7,6 @@
 #include <time.h>
 #include <unistd.h>
 #include <math.h>
-#include <stdio.h>
 
 Processor::Processor() {
    neuronGrowth.Enabled          = NEURONGROWTH;
@@ -32,57 +31,14 @@ Processor::Processor() {
 void Processor::RunNeuronGrowth() {}
 void Processor::RunAxonGrowth() {}
 
-void Processor::Scenario1(NeuronField field) {
-   for(int i = 0; i < 10; i++) {
-      field.addNeuron(30 + 50 * i , 150);  
-      field.growDendr(i, 10);     
-      field.growAxon(i, 50, M_PI/2);
-      field.chargeBatteries(5);
-   }
-   field.fireNeuron(0);
-}
-
 void Processor::Run() {
    srand (time(NULL));
    NeuronField field1;
-   GUI ui;
+   WorkingUI ui;
    int time = 0;
-//   Scenario1(field1);
 
-//#define Scenario1
-#ifdef Scenario1
-/* grow neurons */
-   for(int i = 0; i < 10; i++) {
-      field1.addNeuron(30 + 50 * i , 150);
-      field1.growDendr(i, 10);
-   }
-
-   for(int i = 0; i < 10; i++) {
-      field1.addNeuron(480 - 50 * i , 250);
-      field1.growDendr(10 + i, 10);
-   }
-
-   for(int i = 0; i < 10; i++) {
-      field1.addNeuron(480 - 50 * i , 350);
-      field1.growDendr(20 + i, 10);
-   }
-
-/* grow axons */
-   for(int i = 0; i < 9; i++) {
-      field1.growAxon(i, 50, M_PI / 2);
-   }
-   field1.growAxon(9, 200, 0);
-   for(int i = 0; i < 9; i++) {
-      field1.growAxon(10 + i, 50, 3 * M_PI / 2);
-   }
-   field1.growAxon(19, 100, M_PI);
-
-   for(int i = 0; i < 9; i++) {
-      field1.growAxon(20 + i, 50, 3 * M_PI / 2);
-   }
-   field1.growAxon(29, 100, M_PI);
-
-   field1.chargeBatteries(7);
+#ifdef BUILDSCENARIO1
+   BuildScenario1(&field1);
 #endif
 
 #ifdef TEST
@@ -109,13 +65,12 @@ void Processor::Run() {
       }
       if (dendrGrowth.TimeLeft              == 0
       and dendrGrowth.Enabled               == true
-      and field1.getNumberOfCells()         != 0
-      and time > 50) {
+      and field1.getNumberOfCells()         != 0) {
          field1.growDendr(rand()%field1.getNumberOfCells(), 1);
          dendrGrowth.TimeLeft          = rand()%DENDRGROWTHCHARACTERTIME;
       }
       if (spontaneousActivity.TimeLeft      == 0
-      and spontaneousActivity.Enabled   == true
+      and spontaneousActivity.Enabled       == true
       and field1.getNumberOfCells()         != 0) {
          field1.fireNeuron();
          spontaneousActivity.TimeLeft  = rand()%SPONTANEOUSACTIVITYCHARACTERTIME;
@@ -154,4 +109,40 @@ void Processor::Run() {
 #endif
       usleep(DELAYTIME);
    }
+}
+
+void Processor::BuildScenario1(NeuronField* field) {
+/* grow neurons */
+   for(int i = 0; i < 10; i++) {
+      field->addNeuron(30 + 50 * i , 150);
+      field->growDendr(i, 10);
+   }
+
+   for(int i = 0; i < 10; i++) {
+      field->addNeuron(480 - 50 * i , 250);
+      field->growDendr(10 + i, 10);
+   }
+
+   for(int i = 0; i < 10; i++) {
+      field->addNeuron(480 - 50 * i , 350);
+      field->growDendr(20 + i, 10);
+   }
+
+/* grow axons */
+   for(int i = 0; i < 9; i++) {
+      field->growAxon(i, 50, M_PI / 2);
+   }
+   field->growAxon(9, 200, 0);
+   for(int i = 0; i < 9; i++) {
+      field->growAxon(10 + i, 50, 3 * M_PI / 2);
+   }
+   field->growAxon(19, 100, M_PI);
+
+   for(int i = 0; i < 9; i++) {
+      field->growAxon(20 + i, 50, 3 * M_PI / 2);
+   }
+   field->growAxon(29, 100, M_PI);
+/* activity */
+   field->chargeBatteries(7);
+   field->fireNeuron(0);
 }

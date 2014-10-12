@@ -1,7 +1,7 @@
 #include "cell.h"
 #include "cmn_struct.h"
+#include "cmn_defines.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -31,8 +31,8 @@ Neuron::Neuron(int x, int y) {
       coord.CoordY = y;
 
 #ifdef TRACE
-      if(x != -1 and y != -1) {printf("Cell: Added neuron number %d with coordinates x = %d, y = %d\n", NeuronId, x, y);}
-      else                    {printf("Cell: Added neuron number %d without place\n", NeuronId);}
+      if(x != -1 and y != -1) {PRINTTRACE("Cell", "Added neuron number %d with coordinates x = %d, y = %d\n", NeuronId, x, y);}
+      else                    {PRINTTRACE("Cell", "Added neuron number %d without place\n", NeuronId);}
 #endif
 
       axonEnd.CoordX = x;
@@ -49,7 +49,7 @@ Neuron::Neuron(int x, int y) {
       batteryCharge = STARTBATTERYCHARGE;
    }
    else { //TODO:Add destructor calling for not creating new object
-      printf("Cell: Can`t create a new neuron with counter %d. Maximum number of cells exceeded\n", NeuronCounter);
+      PRINTTRACE("Cell", "Can`t create a new neuron with counter %d. Maximum number of cells exceeded\n", NeuronCounter);
    }
 }
 
@@ -66,7 +66,7 @@ void Neuron::setCoordinates(int x, int y) {//TODO: proper checking of coordinate
       axonEnd.CoordY = y;
 
 #ifdef TRACE
-      printf("Cell: Coordinates of neuron number %d were changed. New coordinates are x = %d, y = %d\n", NeuronId, x, y);
+      PRINTTRACE("Cell", "Coordinates of neuron number %d were changed. New coordinates are x = %d, y = %d\n", NeuronId, x, y);
 #endif
 }
 
@@ -86,19 +86,19 @@ int Neuron::growAxon(int length, double azimuth) {
    axonEnd.CoordY = coord.CoordY + (int) double(length) * cos(azimuth);
 
 #ifdef TRACE
-   printf("Cell: Axon end of neuron %d is (%d, %d) now\n", NeuronId, axonEnd.CoordX, axonEnd.CoordY);
+   PRINTTRACE("Cell", "Axon end of neuron %d is (%d, %d) now\n", NeuronId, axonEnd.CoordX, axonEnd.CoordY);
 #endif
    return axon.Length;
 }
 
 int Neuron::growDendr(int delta) {
 #ifdef TRACE
-   printf("Cell: Trying to grow dendrite of neuron %d. Dendrity radius was %d", NeuronId, dendrRad);
+   PRINTTRACE("Cell", "Trying to grow dendrite of neuron %d. Dendrity radius was %d", NeuronId, dendrRad);
 #endif
    dendrRad += delta;
 
 #ifdef TRACE
-   printf("and is %d now\n", getDendrRad());
+   PRINTTRACE("Cell", "and is %d now\n", getDendrRad());
 #endif
    return dendrRad;
 }
@@ -107,7 +107,7 @@ int Neuron::addConnection(Neuron *tmpConnection) {
    if (numberOfConnections >= MAXNUMBEROFCONNECTIONS) {return 0;}
 
 #ifdef TRACE
-   printf("Cell: Added connection number %d\n", numberOfConnections + 1);
+   PRINTTRACE("Cell", "Added connection number %d\n", numberOfConnections + 1);
 #endif
    bool isAlreadyConnected = false;
    for(int i = 0; i < numberOfConnections; i++)
@@ -149,11 +149,13 @@ void Neuron::unchargeBattery() {
 
 
 void Neuron::printConnections() {
+#ifdef TRACE
    if (numberOfConnections > 0) {
-         printf("Cell: Neuron %d is connected with %d neurons\n", NeuronId, numberOfConnections);
+         PRINTTRACE("Cell", "Neuron %d is connected with %d neurons\n", NeuronId, numberOfConnections);
          for(int i = 0; i < numberOfConnections; i++)
-            printf("Cell: Connection number %d is with neuron %d\n", i + 1, connection[i]->getNeuronId());
+            PRINTTRACE("Cell", "Connection number %d is with neuron %d\n", i + 1, connection[i]->getNeuronId());
    }
+#endif
 }
 
 /**********************

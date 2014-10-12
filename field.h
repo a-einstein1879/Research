@@ -3,16 +3,7 @@
 
 #include "cmn_struct.h"
 #include "cell.h"
-
-#define NEURONSYMBOL          'N'
-#define AXONSYMBOL            'A'
-#define DENDRSYMBOL           'D'
-#define EMPTYFIELDSYMBOL      ' '
-#define FIREDSYMBOL           'F'
-#define NEURONIDINITIALVALUE  (-1)
-
-#define AXONANGLEPRECISENESS        16
-#define DENDRITEANGLEPRECISENESS    90
+#include "cmn_defines.h"
 
 class Field {
 protected:

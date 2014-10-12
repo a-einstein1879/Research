@@ -1,9 +1,9 @@
 #include "field.h"
 #include "cell.h"
 #include "cmn_functions.h"
+#include "cmn_defines.h"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
 
 /*****************
@@ -70,7 +70,7 @@ int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counte
          if (randomity == true)
             addNeuron();
          else {
-            printf("Can`t create neuron here (%d, %d)\n", x, y);
+            PRINTTRACE("Field", "Can`t create neuron here (%d, %d)\n", x, y);
          }
       }
    }
@@ -80,14 +80,14 @@ int NeuronField::addNeuron(int x, int y) { //TODO: fix recursive bug. Add counte
 void NeuronField::fillField(int x, int y, char type, int neuronId) {
 
 #ifdef TRACE
-   printf("Field: Field (%d, %d) was `%c` type", x, y, getFieldType(x, y));
+   PRINTTRACE("Field", "Field (%d, %d) was `%c` type", x, y, getFieldType(x, y));
 #endif
 
    neuronType[x][y] = type;
    neuronIds[x][y]  = neuronId;
 
 #ifdef TRACE
-   printf(" and now it`s `%c` type with id %d\n", getFieldType(x, y), neuronIds[x][y]);
+   PRINTTRACE("Field", " and now it`s `%c` type with id %d\n", getFieldType(x, y), neuronIds[x][y]);
 #endif
 
 }
@@ -98,7 +98,7 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    if (neuron == NULL) {
 
 #ifdef TRACE
-   printf("Field: growAxon: getNeuronById returned NULL pointer\n");
+   Message("Field.cpp: growAxon: getNeuronById returned NULL pointer\n");
 #endif
       return;
    }
@@ -112,7 +112,7 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
    int axonLength = neuron->getAxonLength();
 
 #ifdef TRACE
-   printf("Field: Axon starts growing. Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
+   PRINTTRACE("Field", "Axon starts growing. Axon end coordinates = (%d, %d).\tAxonLength is %d.\tAxon azimuth is %.3e\n", coord.CoordX, coord.CoordY, axonLength, azimuth);
 #endif
 
    for(int i = axonLength + 1; i < axonLength + delta + 1; i++) {
@@ -128,7 +128,7 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
          if (neu == NULL) {
 
 #ifdef TRACE
-            printf("Field: Going to next iteration due to NULL return value\n");
+            Message("Field.cpp: Going to next iteration due to NULL return value\n");
 #endif
 
             continue;
@@ -136,13 +136,13 @@ void NeuronField::growAxon(int NeuronId, int delta, double azimuth) {
          neuron->addConnection(neu);
 
 #ifdef TRACE
-         printf("Field: Added connection. From neuron %d to neuron %d in (%d, %d)\n", NeuronId, neu->getNeuronId(), newx, newy);
+         PRINTTRACE("Field", "Added connection. From neuron %d to neuron %d in (%d, %d)\n", NeuronId, neu->getNeuronId(), newx, newy);
 #endif
 
          int NumberOfConnections = neuron->getNumberOfConnections();
 
 #ifdef TRACE
-         if (maxNumberOfConnections < NumberOfConnections) {printf("Field: maxNumberOfConnections increased to %d\n", NumberOfConnections);}
+         if (maxNumberOfConnections < NumberOfConnections) {PRINTTRACE("Field", "maxNumberOfConnections increased to %d\n", NumberOfConnections);}
 #endif
 
          maxNumberOfConnections = (maxNumberOfConnections < NumberOfConnections) ? NumberOfConnections : maxNumberOfConnections;
@@ -160,7 +160,7 @@ void NeuronField::growDendr(int NeuronId, int delta) {
    int dendrRad = neuron->getDendrRad();
 
 #ifdef TRACE
-         printf("Field: Starting growing neuron %d dendrite.\n", NeuronId);
+         PRINTTRACE("Field", "Starting growing neuron %d dendrite.\n", NeuronId);
 #endif
 
    neuron->growDendr(delta);
@@ -183,13 +183,13 @@ void NeuronField::growDendr(int NeuronId, int delta) {
             neuro->addConnection( getNeuronById(NeuronId) );
 
 #ifdef TRACE
-         printf("Field: Adding connection from neuron %d to neuron %d\n", neuro->getNeuronId(), NeuronId);
+         PRINTTRACE("Field", "Adding connection from neuron %d to neuron %d\n", neuro->getNeuronId(), NeuronId);
 #endif
 
          int NumberOfConnections = neuro->getNumberOfConnections();
 
 #ifdef TRACE
-         if (maxNumberOfConnections < NumberOfConnections) {printf("maxNumberOfConnections increased to %d\n", NumberOfConnections);}
+         if (maxNumberOfConnections < NumberOfConnections) {PRINTTRACE("Field", "maxNumberOfConnections increased to %d\n", NumberOfConnections);}
 #endif
          maxNumberOfConnections = (maxNumberOfConnections < NumberOfConnections) ? NumberOfConnections : maxNumberOfConnections;
 
@@ -212,7 +212,7 @@ void NeuronField::fireNeuron(int NeuronId) {
 
    if (neuron == NULL) {
 #ifdef TRACE
-   printf("Field: fireNeuron: getNeuronById returned NULL pointer\n");
+   Message("Field.cpp: fireNeuron: getNeuronById returned NULL pointer\n");
 #endif
       return;
    }
@@ -225,7 +225,7 @@ void NeuronField::spreadImpulse(int NeuronId) {
    isFired = new bool[numberOfCells];
    for(int i = 0; i < numberOfCells; i++) {
       isFired[i] = neurons[i].checkIfFired();
-      printf("Neuron number %d is %d\n", i, isFired[i]);
+      PRINTTRACE("Field", "Neuron number %d is %d\n", i, isFired[i]);
    }
    
    if (NeuronId == -1) {
@@ -277,7 +277,7 @@ Neuron* NeuronField::getNeuronById(int neuronId) {
    }
 
 #ifdef TRACE
-         if ( neuro == NULL ) {printf("Field: Can`t find a neuron with neuronId %d\n", neuronId);}
+         if ( neuro == NULL ) {PRINTTRACE("Field", "Can`t find a neuron with neuronId %d\n", neuronId);}
 #endif
 
    return neuro;
@@ -290,7 +290,7 @@ char NeuronField::getFieldType(int x, int y) {
 Neuron* NeuronField::getNeuronByField(int x, int y) {
 
 #ifdef TRACE
-   printf("Field: Getting neuron by field (%d, %d)\n", x, y);
+   PRINTTRACE("Field", "Getting neuron by field (%d, %d)\n", x, y);
 #endif
    Neuron* ret = NULL;
 
@@ -300,8 +300,8 @@ Neuron* NeuronField::getNeuronByField(int x, int y) {
    }
 
 #ifdef TRACE
-         if (ret == NULL) {printf("Field: Can`t get neuron in (%d, %d)\n",     x, y);}
-         else             {printf("Field: Trying to get neuron in (%d, %d)\n", x, y);}
+         if (ret == NULL) {PRINTTRACE("Field", "Can`t get neuron in (%d, %d)\n",     x, y);}
+         else             {PRINTTRACE("Field", "Trying to get neuron in (%d, %d)\n", x, y);}
 #endif
 
    return ret;
@@ -322,11 +322,11 @@ int NeuronField::getMaxNumberOfConnections() {
 **********************/
 
 void NeuronField::printFieldStat(int time) {
-   if (time != -1) {printf("time = %d\n", time);}
+   if (time != -1) {PRINTTRACE("Field", "time = %d\n", time);}
    int numberOfFiredNeurons = 0;
    for(int i = 0; i < numberOfCells; i++)
       numberOfFiredNeurons += neurons[i].checkIfFired();
-   printf("numberOfCells = %d\nmaxNumberOfConnections = %d\nnumberOfFiredNeurons = %d\n", numberOfCells, maxNumberOfConnections, numberOfFiredNeurons);
+   PRINTTRACE("Field", "numberOfCells = %d\nmaxNumberOfConnections = %d\nnumberOfFiredNeurons = %d\n", numberOfCells, maxNumberOfConnections, numberOfFiredNeurons);
 #ifdef TEST
    for(int i = 0; i < numberOfCells; i++) {
       struct Coordinates coord = neurons[i].getCoord();
@@ -336,7 +336,7 @@ void NeuronField::printFieldStat(int time) {
       int batteryCharge        = neurons[i].getBatteryCharge();
       int numberOfConnections  = neurons[i].getNumberOfConnections();
       bool isFired             = neurons[i].checkIfFired();
-      printf("Field: Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. DendriteRad = %d. BatteryCharge = %d. NumberOfConnections = %d. IsFired = %d\n", 
+      PRINTTRACE("Field", "Coord[%d] = (%d,%d). AxonLength = %d. AxonAzimuth = %.3e. DendriteRad = %d. BatteryCharge = %d. NumberOfConnections = %d. IsFired = %d\n", 
                      i, coord.CoordX, coord.CoordY, axonLength, axonAzimuth, dendrRad, batteryCharge, numberOfConnections, isFired);
       if (numberOfConnections > 0) { neurons[i].printConnections(); }
    }

@@ -2,9 +2,7 @@
 #define CELL_H
 
 #include "cmn_struct.h"
-
-#define STARTBATTERYCHARGE                0
-#define MAXNUMBEROFCONNECTIONSPERNEURON   10
+#include "cmn_defines.h"
 
 /**********************
       Cell
