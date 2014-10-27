@@ -106,16 +106,21 @@ int Neuron::growDendr(int delta) {
 }
 
 int Neuron::addConnection(Neuron *tmpConnection) {
-   if (numberOfConnections >= MAXNUMBEROFCONNECTIONS) {return 0;}
+   if (numberOfConnections > MAXNUMBEROFCONNECTIONSPERNEURON) {return 0;}
 
 #ifdef TRACE
    PRINTTRACE("Cell", "Added connection number %d\n", numberOfConnections + 1);
 #endif
+
    bool isAlreadyConnected = false;
-   for(int i = 0; i < numberOfConnections; i++)
-      if (connection[i]->getNeuronId() == tmpConnection->getNeuronId()) {isAlreadyConnected = true;}
-   if (numberOfConnections < MAXNUMBEROFCONNECTIONSPERNEURON
-   and isAlreadyConnected == false) {
+   for(int i = 0; i < numberOfConnections; i++) {
+      if (connection[i]->getNeuronId() == tmpConnection->getNeuronId()) {
+         isAlreadyConnected = true;
+      }
+   }
+
+   if (    numberOfConnections < MAXNUMBEROFCONNECTIONSPERNEURON
+       and isAlreadyConnected == false) {
       connection[numberOfConnections++] = tmpConnection;
    }
    return 0;

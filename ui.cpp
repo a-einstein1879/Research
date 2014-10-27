@@ -12,6 +12,8 @@
 
 void CLUI::printNeuronalNetwork(NeuronField Field, int time) {
    clearScreen();
+   Field.printFieldStat(time);
+   if (!PictureEnabled) {return;}
 
    char field[XMAXSIZE][YMAXSIZE];
 
@@ -31,10 +33,10 @@ void CLUI::printNeuronalNetwork(NeuronField Field, int time) {
          Print("%c ", field[i][j]);
    }
    Message("\n");
-   Field.printFieldStat(time);
 }
 
 void CLUI::clearScreen() {
+   if (!PictureEnabled) {return;}
    system("clear");
 }
 
@@ -44,23 +46,28 @@ void CLUI::clearScreen() {
 *****************/
 
 GUI::GUI() {
+   if (!PictureEnabled) {return;}
    XInitThreads();
    int gd=DETECT,gm;
    initgraph(&gd,&gm,NULL);
 }
 
 GUI::~GUI() {
+   if (!PictureEnabled) {return;}
    closegraph();
 }
 
 void GUI::clearScreen() {
+   if (!PictureEnabled) {return;}
    for(int i = 0; i < XMAXSIZE; i++)
       for(int j = 0; j < YMAXSIZE; j++)
          putpixel(i, j, BLACK);
 }
 
 void GUI::printNeuronalNetwork(NeuronField Field, int time) {
-
+   system("clear");
+   Field.printFieldStat(time);
+   if (!PictureEnabled) {return;}
    char field[XMAXSIZE][YMAXSIZE];
 
    for(int x = 0; x < XMAXSIZE; x++)
@@ -69,8 +76,6 @@ void GUI::printNeuronalNetwork(NeuronField Field, int time) {
          if ( field[x][y] != EMPTYFIELDSYMBOL ) {field[x][y] = Field.getSpotStat(x, y) ? FIREDSYMBOL : field[x][y];}
       }
 
-   system("clear");
-   Field.printFieldStat(time);
 //   if ( time%( Field.getMaxNumberOfConnections() < 10 ? 50 : 5 ) != 0 ) {return;}
    for(int j = 0; j < YMAXSIZE; j++)
       for(int i = 0; i < XMAXSIZE; i++) {

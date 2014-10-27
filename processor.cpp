@@ -54,7 +54,7 @@ void Processor::Run() {
    field1.growDendr(1, 2);
 #endif
 
-   while(time < MAXTIME) {
+   while(time <= MAXTIME) {
       /* actions */
       if (neuronGrowth.TimeLeft             == 0
       and neuronGrowth.Enabled              == true

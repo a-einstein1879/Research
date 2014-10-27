@@ -336,17 +336,44 @@ int NeuronField::getMaxNumberOfConnections() {
 void NeuronField::printFieldStat(int time) {
    if (time != -1) {PRINTTRACE("Field", "time = %d\n", time);}
 
+/* Spiking neurons */
+   if (  time > SPIKINGNEURONSSTARTTIME
+        and time < SPIKINGNEURONSENDTIME) {
+      for(int i = 0; i < numberOfCells; i++) {
+         bool isFired = neurons[i].checkIfFired();
+         if (!(time%SPIKINGNEURONSFILEPRINTINGFREQUENCY)) {PrintFile(SPIKINGNEURONS, "%d\t%d\t%d", time, i, isFired);}
+      }
+   }
+
+/* Number of fired neurons */
    int numberOfFiredNeurons = 0;
-   for(int i = 0; i < numberOfCells; i++)
-      numberOfFiredNeurons += neurons[i].checkIfFired();
-   PrintFile(NUMBEROFFIREDNEURONS, "%d\t%d", time, numberOfFiredNeurons);
+   if (  time > NUMBEROFFIREDNEURONSSTARTTIME
+        and time < NUMBEROFFIREDNEURONSENDTIME) {
+      for(int i = 0; i < numberOfCells; i++) {
+         bool isFired = neurons[i].checkIfFired();
+         numberOfFiredNeurons += isFired;
+      }
+      if (!(time%NUMBEROFFIREDNEURONSFILEPRINTINGFREQUENCY)) {PrintFile(NUMBEROFFIREDNEURONS, "%d\t%d", time, numberOfFiredNeurons);}
+   }
 
    PRINTTRACE("Field", "numberOfCells = %d\nmaxNumberOfConnections = %d\nnumberOfFiredNeurons = %d\n", numberOfCells, maxNumberOfConnections, numberOfFiredNeurons);
 
-   int numberOfConnections = 0;
-   for(int i = 0; i < numberOfCells; i++) {
-      numberOfConnections = neurons[i].getNumberOfConnections();
-      PrintFile(NUMBEROFCONNECTIONS, "%d\t%d\t%d", time, i, numberOfConnections);
+/* Number of connections per neuron */
+   if (  time > NUMBEROFCONNECTIONSSTARTTIME
+     and time < NUMBEROFCONNECTIONSENDTIME) {
+      int numberOfConnections[MAXNUMBEROFCONNECTIONSPERNEURON + 1];
+      for(int i = 0; i < MAXNUMBEROFCONNECTIONSPERNEURON + 1; i++)
+         numberOfConnections[i] = 0;
+
+      for(int i = 0; i < numberOfCells; i++) {
+         numberOfConnections[neurons[i].getNumberOfConnections()]++;
+      }
+
+      for(int i = 0; i < MAXNUMBEROFCONNECTIONSPERNEURON + 1; i++) {
+         if (!(time%NUMBEROFCONNECTIONSFILEPRINTINGFREQUENCY)) {
+            PrintFile(NUMBEROFCONNECTIONS, "%d\t%d\t%d", time, i, numberOfConnections[i]);
+         }
+      }
    }
 
 #ifdef TEST

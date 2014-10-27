@@ -19,7 +19,7 @@
 #define CHARGEBATTERIESCHARACTERTIME      7
 #define SPREADIMPULSECHARACTERTIME        5
 
-#define MAXTIME                           5000000
+#define MAXTIME                           20000
 #define DELAYTIME                         1
 
 /*********************/
@@ -34,7 +34,6 @@
 #define YMAXSIZE                          100
 #define MAXNUMBEROFNEURONS                5000
 
-#define MAXNUMBEROFCONNECTIONS            1000
 #define MAXNUMBEROFCONNECTIONSPERNEURON   10
 #define MAXAXONLENGHT                     10
 #define MAXDENDRITERADIUS                 4
@@ -51,6 +50,7 @@
 /* interface defines */
 /*********************/
 
+#define PictureEnabled        0
 #define WorkingUI             GUI
 /* symbols */
 #define NEURONSYMBOL          'N'
@@ -135,15 +135,32 @@
 /*********************/
 
 /*********************/
-/*       Files       */
+/*   File tracing    */
 /*********************/
-#define ACTIVITYFILE                   "./outputFolder/activityFile.txt"
+/* times */
+#define SPIKINGNEURONSSTARTTIME                          MAXTIME - 1000
+#define SPIKINGNEURONSENDTIME                            MAXTIME
+#define SPIKINGNEURONSFILEPRINTINGFREQUENCY              1
+
+#define NUMBEROFCONNECTIONSSTARTTIME                     0
+#define NUMBEROFCONNECTIONSENDTIME                       7000
+#define NUMBEROFCONNECTIONSFILEPRINTINGFREQUENCY         500
+
+#define NUMBEROFFIREDNEURONSSTARTTIME                    0
+#define NUMBEROFFIREDNEURONSENDTIME                      MAXTIME
+#define NUMBEROFFIREDNEURONSFILEPRINTINGFREQUENCY        1
+
+
+/* files */
+
+#define NUMBEROFFIREDNEURONSFILE       "./outputFolder/numberOfFiredNeuronsFile.txt"
 #define NUMBEROFCONNECTIONSFILE        "./outputFolder/numberOfConnectionsFile.txt"
+#define SPIKINGNEURONSFILE             "./outputFolder/spikingNeuronsFile.txt"
 
 /* file IDs */
 #define NUMBEROFFIREDNEURONS  1
 #define NUMBEROFCONNECTIONS   2
-
+#define SPIKINGNEURONS        3
 
 /*********************/
 /*        end        */
@@ -168,22 +185,23 @@
 /*
    numberOfFiredNeurons - activity file
 */
-#define PrintFD(fd, format, ...)                \
+#define PrintFD(file, format, ...)              \
+   fd=fopen(file, "a+");                        \
    fprintf(fd, format, __VA_ARGS__);            \
-   fprintf(fd, "\n");
+   fprintf(fd, "\n");                           \
+   fclose(fd);
 
 #define PrintFile(dataType, format, ...)        \
    FILE *fd;                                    \
    switch(dataType) {                           \
       case NUMBEROFFIREDNEURONS:                \
-         fd=fopen(ACTIVITYFILE,"a+");           \
-         PrintFD(fd, format, __VA_ARGS__);      \
-         fclose(fd);                            \
+         PrintFD(NUMBEROFFIREDNEURONSFILE, format, __VA_ARGS__);\
          break;                                 \
       case NUMBEROFCONNECTIONS:                 \
-         fd=fopen(NUMBEROFCONNECTIONSFILE,"a+");\
-         PrintFD(fd, format, __VA_ARGS__);      \
-         fclose(fd);                            \
+         PrintFD(NUMBEROFCONNECTIONSFILE, format, __VA_ARGS__);\
+         break;                                 \
+      case SPIKINGNEURONS:                      \
+         PrintFD(SPIKINGNEURONSFILE, format, __VA_ARGS__);\
          break;                                 \
    }
 
