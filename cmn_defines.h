@@ -168,13 +168,21 @@
 /*
    numberOfFiredNeurons - activity file
 */
+#define PrintFD(fd, format, ...)                \
+   fprintf(fd, format, __VA_ARGS__);            \
+   fprintf(fd, "\n");
+
 #define PrintFile(dataType, format, ...)        \
    FILE *fd;                                    \
    switch(dataType) {                           \
       case NUMBEROFFIREDNEURONS:                \
          fd=fopen(ACTIVITYFILE,"a+");           \
-         fprintf(fd, format, __VA_ARGS__);      \
-         fprintf(fd, "\n");                     \
+         PrintFD(fd, format, __VA_ARGS__);      \
+         fclose(fd);                            \
+         break;                                 \
+      case NUMBEROFCONNECTIONS:                 \
+         fd=fopen(NUMBEROFCONNECTIONSFILE,"a+");\
+         PrintFD(fd, format, __VA_ARGS__);      \
          fclose(fd);                            \
          break;                                 \
    }
